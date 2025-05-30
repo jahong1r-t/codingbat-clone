@@ -12,6 +12,11 @@
         <i class="fas fa-moon"></i>
     </div>
     <div class="auth-container">
+
+        <div class="auth-logo">
+            <img id="logo-img" src="assets/img/logo-black.png" width="200px" alt="404">
+        </div>
+
         <div class="auth-tabs">
             <button class="auth-tab active" data-tab="login">Sign In</button>
             <button class="auth-tab" data-tab="signup">Sign Up</button>
@@ -46,11 +51,6 @@
                     <label for="signup-confirm">Confirm Password</label>
                     <input type="password" id="signup-confirm" required>
                 </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="signup-admin"> Register as Admin
-                    </label>
-                </div>
                 <button type="submit" class="btn btn-primary">Sign Up</button>
                 <p class="error-message" id="signup-error"></p>
             </form>
@@ -58,36 +58,8 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const loginForm = document.getElementById('login-form');
-        const signupForm = document.getElementById('signup-form');
-        const loginTab = document.querySelector('[data-tab="login"]');
-        const signupTab = document.querySelector('[data-tab="signup"]');
-        const loginError = document.getElementById('login-error');
-        const signupError = document.getElementById('signup-error');
-
-        loginTab.addEventListener('click', () => {
-            loginTab.classList.add('active');
-            signupTab.classList.remove('active');
-            loginForm.style.display = 'block';
-            signupForm.style.display = 'none';
-            loginError.textContent = '';
-            signupError.textContent = '';
-        });
-
-        signupTab.addEventListener('click', () => {
-            signupTab.classList.add('active');
-            loginTab.classList.remove('active');
-            signupForm.style.display = 'block';
-            loginForm.style.display = 'none';
-            loginError.textContent = '';
-            signupError.textContent = '';
-        });
-    });
-
-</script>
 
 <script src="assets/js/theme.js"></script>
+<script src="assets/js/auth.js"></script>
 </body>
 </html>
