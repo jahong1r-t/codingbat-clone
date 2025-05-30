@@ -1,0 +1,192 @@
+.admin-container {
+    flex: 1;
+    padding: var(--space-3);
+    margin: 0 auto;
+    width: 95%;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+}
+
+.admin-content {
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-3);
+}
+
+.problem-management h3 {
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-1);
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.admin-problem-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.admin-problem-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.admin-problem-info {
+    flex: 1;
+}
+
+.admin-problem-title {
+    margin: 0;
+    font-size: var(--font-lg);
+}
+
+.admin-problem-meta {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: 0.25rem;
+}
+
+.admin-problem-difficulty {
+    text-transform: capitalize;
+    padding: 1px 10px;
+    border-radius: 5px;
+}
+
+.admin-problem-test-count {
+    color: var(--text-secondary);
+}
+
+.admin-problem-actions {
+    display: flex;
+    gap: var(--space-1);
+}
+
+/* Test case editor */
+.test-cases-section {
+    margin-top: var(--space-3);
+}
+
+.test-cases-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+}
+
+#test-cases-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.test-case-editor {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    padding: var(--space-2);
+}
+
+.test-case-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-1);
+}
+
+.test-case-header h5 {
+    margin: 0;
+}
+
+.test-case-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+/* Test Cases Accordion in Modal */
+.test-cases-accordion {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-2);
+}
+
+.test-case-accordion-item {
+    border-bottom: 1px solid var(--border);
+}
+
+.test-case-accordion-item:last-child {
+    border-bottom: none;
+}
+
+.test-case-accordion-header {
+    padding: var(--space-2);
+    background-color: var(--surface);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.test-case-accordion-header:hover {
+    background-color: var(--background-hover);
+}
+
+.test-case-accordion-header h5 {
+    margin: 0;
+    font-size: var(--font-sm);
+    color: var(--text);
+}
+
+.test-case-accordion-content {
+    padding: var(--space-2);
+    background-color: var(--background);
+    display: none;
+}
+
+.test-case-accordion-item.active .test-case-accordion-content {
+    display: block;
+}
+
+.test-case-accordion-icon {
+    transition: transform 0.2s ease;
+}
+
+.test-case-accordion-item.active .test-case-accordion-icon {
+    transform: rotate(180deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+
+    .admin-problem-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+
+    .admin-problem-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}

@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+.problem-container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 70px);
+}
+
+.problem-content {
+    display: flex;
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+}
+
+.problem-description-panel {
+    width: 45%;
+    padding-left: 25px;
+    overflow-y: auto;
+    height: calc(100vh - 70px);
+}
+
+.problem-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
+    position: sticky;
+    top: 0;
+    background-color: var(--background);
+    border-bottom: 1px solid #707070;
+    padding: var(--space-2) 0;
+    z-index: 10;
+}
+
+.problem-header h2 {
+    margin-bottom: 0;
+}
+
+.problem-description {
+    margin-bottom: var(--space-3);
+    line-height: 1.6;
+}
+
+.problem-description ul,
+.problem-description ol {
+    margin-left: var(--space-3);
+    margin-bottom: var(--space-2);
+}
+
+.test-cases-section h3 {
+    margin-bottom: var(--space-2);
+}
+
+.test-cases {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.test-case {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.test-case-header {
+    background-color: var(--surface);
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid var(--border);
+}
+
+.test-case-title {
+    font-weight: var(--font-medium);
+}
+
+.test-case-content {
+    padding: var(--space-2);
+}
+
+.test-input, .test-expected, .test-explanation {
+    margin-bottom: var(--space-1);
+}
+
+.editor-panel {
+    position: relative;
+    width: 55%;
+    height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--border);
+    background-color: var(--background);
+}
+
+.editor-tabs {
+    display: flex;
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.editor-tab {
+    padding: var(--space-1) var(--space-2);
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.editor-tab.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.editor-container {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.editor-container.active {
+    display: flex;
+}
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.editor-toolbar .file-name {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.editor-toolbar .button-group {
+    display: flex;
+    gap: var(--space-1);
+}
+
+.code-editor-wrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+.code-editor {
+    flex: 1;
+    padding: var(--space-1);
+    font-family: 'Fira Code', monospace;
+    font-size: var(--font-sm);
+    background-color: transparent !important;
+    color: var(--text-primary);
+    line-height: 1.5;
+    z-index: 10;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-2);
+    border-bottom: 1px solid var(--border);
+    background-color: var(--surface);
+}
+
+.results-header h3 {
+    margin-bottom: 0;
+}
+
+.results-summary {
+    display: flex;
+    gap: var(--space-1);
+    align-items: center;
+}
+
+.test-results {
+    flex: 1;
+    padding: var(--space-2);
+    overflow-y: auto;
+    background-color: var(--background);
+}
+
+.test-result {
+    margin-bottom: var(--space-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.test-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid var(--border);
+    background-color: var(--surface);
+}
+
+.test-result-status {
+    font-size: var(--font-xs);
+    font-weight: var(--font-medium);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+}
+
+.status-passed {
+    background-color: rgba(6, 214, 160, 0.2);
+    color: var(--success-color);
+    border-radius: 3px;
+    padding: 3px 6px;
+}
+
+.status-failed {
+    background-color: rgba(239, 71, 111, 0.2);
+    color: var(--error-color);
+    border-radius: 3px;
+    padding: 3px 6px;
+}
+
+.status-error {
+    background-color: rgba(255, 209, 102, 0.2);
+    color: var(--warning-color);
+    border-radius: 3px;
+    padding: 3px 6px;
+}
+
+.test-result-content {
+    padding: var(--space-2);
+}
+
+.test-input, .test-expected, .test-actual {
+    margin-bottom: var(--space-1);
+}
+
+.CodeMirror {
+    flex: 1;
+    height: 100%;
+    font-family: 'Fira Code', monospace;
+    font-size: var(--font-sm);
+    line-height: 1.5;
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    z-index: 10 !important;
+}
+
+.CodeMirror-sizer,
+.CodeMirror-scroll,
+.CodeMirror-gutters {
+    background: transparent !important;
+    z-index: 0 !important;
+}
+
+.line-numbers {
+    padding: var(--space-1);
+    text-align: right;
+    background-color: var(--surface);
+    color: var(--text-secondary);
+    font-family: 'Fira Code', monospace;
+    font-size: var(--font-sm);
+    border-right: 1px solid var(--border);
+    white-space: pre;
+    scrollbar-width: none;
+    user-select: none;
+    overflow-y: auto;
+    height: 100%;
+    z-index: 5;
+}
+
+
+body:not(.dark-theme) .CodeMirror {
+    background: #FAFAFA !important;
+    color: #1C2526 !important;
+}
+
+/* Light modeda kursor sozlamalari */
+body:not(.dark-theme) .CodeMirror-cursor {
+    border-left: 2px solid #000000 !important; /* Qora kursor, 2px qalinlik */
+    background: #000000 !important; /* Kursorning foni qora */
+}
+
+/* Dark modeda kursor sozlamalari (agar kerak bo'lsa) */
+body.dark-theme .CodeMirror-cursor {
+    border-left: 2px solid #FFFFFF !important; /* Oq kursor */
+    background: #FFFFFF !important; /* Kursorning foni oq */
+}
+
+/* Light modeda sintaksis ranglari (oldingi holatda qoldiriladi) */
+body:not(.dark-theme) .cm-keyword {
+    color: #0000FF;
+}
+
+body:not(.dark-theme) .cm-string {
+    color: #008000;
+}
+
+body:not(.dark-theme) .cm-number {
+    color: #098658;
+}
+
+body:not(.dark-theme) .cm-comment {
+    color: #8A653B;
+}
+
+body:not(.dark-theme) .cm-type {
+    color: #267F99;
+}
+
+body:not(.dark-theme) .cm-def {
+    color: #1C2526;
+}
+
+/* Qator raqamlari uchun fon va matn rangi */
+body:not(.dark-theme) .line-numbers {
+    background-color: #EEEEEE;
+    color: #666666;
+    border-right: 1px solid #CCCCCC;
+}
+
+/* Qolgan kodlar o'zgarishsiz qoladi */
+
+/* Qolgan kodlar o'zgarishsiz qoladi */
+@media (max-width: 1024px) {
+    .problem-content {
+        flex-direction: column;
+    }
+
+    .problem-description-panel {
+        width: 100%;
+        height: auto;
+        padding-bottom: 60vh;
+    }
+
+    .editor-panel {
+        width: 100%;
+        height: 60vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .problem-description-panel {
+        padding-bottom: 70vh;
+    }
+
+    .editor-panel {
+        height: 70vh;
+    }
+
+    .editor-toolbar {
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+}
