@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>CodingBat - Admin Panel</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/logo.png">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/admin.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
