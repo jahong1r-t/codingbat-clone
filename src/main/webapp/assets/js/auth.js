@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginError = document.getElementById('login-error');
     const signupError = document.getElementById('signup-error');
 
-    // Function to switch to Sign Up tab
     const switchToSignUp = () => {
         signupTab.classList.add('active');
         loginTab.classList.remove('active');
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         signupError.textContent = '';
     };
 
-    // Function to switch to Sign In tab
     const switchToSignIn = () => {
         loginTab.classList.add('active');
         signupTab.classList.remove('active');
@@ -26,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
         signupError.textContent = '';
     };
 
-    // Check URL parameter to determine default tab
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('tab') === 'signup') {
         switchToSignUp();
@@ -34,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         switchToSignIn();
     }
 
-    // Event listeners for tab switching
     loginTab.addEventListener('click', switchToSignIn);
     signupTab.addEventListener('click', switchToSignUp);
 });

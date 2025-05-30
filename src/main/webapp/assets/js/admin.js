@@ -143,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     editProblemForm.addEventListener('submit', (e) => {
         e.preventDefault();
         console.log('Edit Problem Form submitted');
-        // TODO: Serverga tahrirlangan muammoni yuborish logikasi qo'shiladi
         closeEditProblemModal();
     });
 });
