@@ -14,12 +14,7 @@ const StorageService = {
      * Initialize storage with default data if empty
      */
     init() {
-        // Initialize users if not exists
-        if (!this.getItem(this.KEYS.USERS)) {
-            this.setItem(this.KEYS.USERS, [{username: 'admin', password: 'admin123', isAdmin: true}]);
-        }
 
-        // Initialize problems if not exists
         if (!this.getItem(this.KEYS.PROBLEMS)) {
             this.setItem(this.KEYS.PROBLEMS, [{
                 id: '1',
@@ -264,18 +259,7 @@ Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.</pre>
      * @param {string} password - Password
      * @returns {object|null} - User object if authenticated, null otherwise
      */
-    authenticateUser(username, password) {
-        const users = this.getUsers();
-        return users.find(u => u.username === username && u.password === password) || null;
-    },
 
-    /**
-     * Set current user
-     * @param {object} user - User object
-     */
-    setCurrentUser(user) {
-        this.setItem(this.KEYS.CURRENT_USER, user);
-    },
 
     /**
      * Get current user
@@ -285,12 +269,6 @@ Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.</pre>
         return this.getItem(this.KEYS.CURRENT_USER);
     },
 
-    /**
-     * Clear current user
-     */
-    clearCurrentUser() {
-        this.removeItem(this.KEYS.CURRENT_USER);
-    },
 
     /**
      * Get all problems
@@ -360,41 +338,11 @@ Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.</pre>
         return true;
     },
 
-    /**
-     * Get all user progress
-     * @returns {object} - User progress object
-     */
-    getAllProgress() {
-        return this.getItem(this.KEYS.USER_PROGRESS) || {};
-    },
 
-    /**
-     * Get user progress
-     * @param {string} username - Username
-     * @returns {object} - User progress object
-     */
-    getUserProgress(username) {
-        const progress = this.getItem(this.KEYS.USER_PROGRESS) || {};
-        return progress[username] || {};
-    },
 
-    /**
-     * Update user progress for a problem
-     * @param {string} username - Username
-     * @param {string} problemId - Problem ID
-     * @param {object} data - Progress data (code, status, etc.)
-     */
-    updateUserProgress(username, problemId, data) {
-        const allProgress = this.getItem(this.KEYS.USER_PROGRESS) || {};
-        const userProgress = allProgress[username] || {};
 
-        userProgress[problemId] = {
-            ...userProgress[problemId], ...data, lastUpdated: new Date().toISOString()
-        };
 
-        allProgress[username] = userProgress;
-        this.setItem(this.KEYS.USER_PROGRESS, allProgress);
-    }
+
 };
 
 // Initialize storage when the script loads

@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>CodingBat</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/logo.png">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,20 +13,20 @@
     <nav class="navbar">
         <div class="navbar-brand">
             <a href="${pageContext.request.contextPath}/">
-                <img id="logo-img" src="assets/img/logo-black.png" style="width: 150px;" alt="logo">
+                <img id="logo-img" src="assets/img/logo-black.png" width="150px" alt="logo">
             </a>
         </div>
         <div class="navbar-menu">
             <div class="theme-toggle">
                 <i class="fas fa-moon"></i>
             </div>
-            <a href="${pageContext.request.contextPath}/auth">
+            <a href="${pageContext.request.contextPath}/auth?tab=signin">
                 <button id="sign-in-btn" class="btn btn-primary">
                     Sign In
                 </button>
             </a>
 
-            <a href="${pageContext.request.contextPath}/auth">
+            <a href="${pageContext.request.contextPath}/auth?tab=signup">
                 <button id="sign-up-btn" class="btn btn-primary">
                     Sign Up
                 </button>
@@ -45,11 +46,21 @@
         </header>
 
         <div class="filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="easy">Easy</button>
-            <button class="filter-btn" data-filter="medium">Medium</button>
-            <button class="filter-btn" data-filter="hard">Hard</button>
-            <button class="filter-btn" data-filter="completed">Completed</button>
+            <a href="${pageContext.request.contextPath}/">
+                <button class="filter-btn active" data-filter="all">All</button>
+            </a>
+            <a href="${pageContext.request.contextPath}/?filter=easy">
+                <button class="filter-btn" data-filter="easy">Easy</button>
+            </a>
+            <a href="${pageContext.request.contextPath}/?filter=medium">
+                <button class="filter-btn" data-filter="medium">Medium</button>
+            </a>
+            <a href="${pageContext.request.contextPath}/?filter=hard">
+                <button class="filter-btn" data-filter="hard">Hard</button>
+            </a>
+            <a href="${pageContext.request.contextPath}/?filter=completed">
+                <button class="filter-btn" data-filter="completed">Completed</button>
+            </a>
         </div>
 
         <div class="problem-list" id="problem-list">
@@ -65,7 +76,9 @@
                     </div>
                 </div>
                 <div class="problem-action">
-                    <button class="btn btn-primary solve-btn">Solve Again</button>
+                    <a href="problem">
+                        <button class="btn btn-primary solve-btn">Solve Again</button>
+                    </a>
                 </div>
             </div>
 
