@@ -15,7 +15,12 @@ public class AuthController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/auth.jsp").forward(req, resp);
+        if ("/signin".equals(req.getPathInfo())) {
+            req.getRequestDispatcher("auth.jsp").forward(req, resp);
+        } else if ("/signup".equals(req.getPathInfo())) {
+            req.getRequestDispatcher("auth.jsp").forward(req, resp);
+        }
+        req.getRequestDispatcher("auth.jsp").forward(req, resp);
     }
 
     @Override

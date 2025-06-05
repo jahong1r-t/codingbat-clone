@@ -1,11 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>CodingBat</title>
-    <link rel="icon" type="image/x-icon" href="assets/img/logo.png">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/img/logo.png">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/styles.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -13,7 +14,8 @@
     <nav class="navbar">
         <div class="navbar-brand">
             <a href="${pageContext.request.contextPath}/">
-                <img id="logo-img" src="assets/img/logo-black.png" width="150px" alt="logo">
+                <img id="logo-img" src="${pageContext.request.contextPath}/assets/img/logo-black.png" width="150px"
+                     alt="logo">
             </a>
         </div>
         <div class="navbar-menu">
@@ -136,6 +138,7 @@
     </div>
 </template>
 
-<script src="assets/js/theme.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/theme.js"></script>
+
 </body>
 </html>

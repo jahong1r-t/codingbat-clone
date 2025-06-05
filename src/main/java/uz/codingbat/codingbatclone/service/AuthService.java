@@ -1,11 +1,15 @@
 package uz.codingbat.codingbatclone.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.User;
+import uz.codingbat.codingbatclone.entity.enums.Role;
+
+import java.io.IOException;
 
 import static uz.codingbat.codingbatclone.utils.Util.*;
 
@@ -55,7 +59,13 @@ public class AuthService {
 
         if (!isValidEmail(email) || !isValidPassword(password) || !isValidFullName(fullName)) {
             req.setAttribute("error", "Please provide a valid email, password (at least 6 characters), and full name.");
-            req.getRequestDispatcher("auth.jsp").forward(req, resp);
+            try {
+                req.getRequestDispatcher("auth.jsp").forward(req, resp);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
             return;
         }
 
@@ -70,13 +80,25 @@ public class AuthService {
             return;
         }
 
-        entityManager.persist(User.builder()
+        entityManager.getTransaction().begin();
+
+        User user = User.builder()
                 .fullName(fullName)
                 .email(email)
                 .password(password)
-                .build());
+                .role(Role.USER)
+                .build();
 
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
         entityManager.close();
+
+        req.getSession().setAttribute("user_id", user.getId());
+        req.getSession().setAttribute("role", user.getRole());
+        req.getSession().setAttribute("is_authenticated", true);
+
+        resp.sendRedirect("/");
+
     }
 
     @SneakyThrows
