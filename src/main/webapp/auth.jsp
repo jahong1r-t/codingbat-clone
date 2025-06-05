@@ -41,16 +41,16 @@
             <form id="signup-form" action="${pageContext.request.contextPath}/auth/signup" method="post"
                   class="auth-form">
                 <div class="form-group">
-                    <label for="signup-username">Email</label>
-                    <input name="email" type="text" id="signup-username" required>
+                    <label for="signup-name">Full name</label>
+                    <input name="name" type="text" id="signup-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input name="email" type="text" id="signup-email" required>
                 </div>
                 <div class="form-group">
                     <label for="signup-password">Password</label>
                     <input name="password" type="password" id="signup-password" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-confirm">Confirm Password</label>
-                    <input type="password" id="signup-confirm" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Sign Up</button>
                 <p class="error-message" id="signup-error"></p>
@@ -58,7 +58,6 @@
         </div>
     </div>
 </div>
-
 
 <script src="assets/js/theme.js"></script>
 <script src="assets/js/auth.js"></script>

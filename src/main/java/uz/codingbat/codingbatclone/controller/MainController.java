@@ -1,4 +1,4 @@
-package uz.codingbat.codingbatclone;
+package uz.codingbat.codingbatclone.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,10 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/auth")
-public class AuthServlet extends HttpServlet {
+@WebServlet("")
+public class MainController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/auth.jsp").forward(req, resp);
+        req.setAttribute("message", "Welcome to codingbat clone");
+        req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 }
