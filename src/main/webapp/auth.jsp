@@ -1,9 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <html>
 <head>
     <title>CodingBat - Authorization</title>
     <link rel="icon" type="image/x-icon" href="assets/img/logo.png">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/toast.css">
     <link rel="stylesheet" href="assets/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -61,5 +63,7 @@
 
 <script src="assets/js/theme.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/toast.js"></script>
+
 </body>
 </html>
