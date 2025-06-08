@@ -22,7 +22,7 @@ public class AuthService {
         String password = req.getParameter("password");
         String email = req.getParameter("email");
 
-        if (!isValidEmail(email) || !isValidPassword(password)) {
+        if (isValidEmail(email) || isValidPassword(password)) {
             req.setAttribute("error", "Invalid email or password");
             req.getRequestDispatcher("/auth.jsp").forward(req, resp);
 
@@ -57,7 +57,7 @@ public class AuthService {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if (!isValidEmail(email) || !isValidPassword(password) || !isValidFullName(fullName)) {
+        if (isValidEmail(email) || isValidPassword(password) || !isValidFullName(fullName)) {
             req.setAttribute("error", "Please provide a valid email, password (at least 6 characters), and full name.");
             try {
                 req.getRequestDispatcher("auth.jsp").forward(req, resp);

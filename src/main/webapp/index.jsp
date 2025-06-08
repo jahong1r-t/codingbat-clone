@@ -22,17 +22,24 @@
             <div class="theme-toggle">
                 <i class="fas fa-moon"></i>
             </div>
-            <a href="${pageContext.request.contextPath}/auth?tab=signin">
-                <button id="sign-in-btn" class="btn btn-primary">
-                    Sign In
-                </button>
-            </a>
-
-            <a href="${pageContext.request.contextPath}/auth?tab=signup">
-                <button id="sign-up-btn" class="btn btn-primary">
-                    Sign Up
-                </button>
-            </a>
+            <c:choose>
+                <c:when test="${sessionScope.is_authenticated == true}">
+                    <a href="${pageContext.request.contextPath}/profile">
+                        <button class="btn btn-primary">Profile</button>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/logout">
+                        <button class="btn btn-primary">Logout</button>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/auth?tab=signin">
+                        <button id="sign-in-btn" class="btn btn-primary">Sign In</button>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/auth?tab=signup">
+                        <button id="sign-up-btn" class="btn btn-primary">Sign Up</button>
+                    </a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </nav>
 
@@ -78,7 +85,7 @@
                     </div>
                 </div>
                 <div class="problem-action">
-                    <a href="problem">
+                    <a href="${pageContext.request.contextPath}/problem">
                         <button class="btn btn-primary solve-btn">Solve Again</button>
                     </a>
                 </div>

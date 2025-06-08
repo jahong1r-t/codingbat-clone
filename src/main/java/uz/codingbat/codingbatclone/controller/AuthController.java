@@ -24,7 +24,7 @@ public class AuthController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         if ("/signin".equals(req.getPathInfo())) {
             authService.signIn(req, resp);
         } else if ("/signup".equals(req.getPathInfo())) {
@@ -32,7 +32,7 @@ public class AuthController extends HttpServlet {
         } else if ("/logout".equals(req.getPathInfo())) {
             authService.logOut(req, resp);
         } else {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Path not found: " + req.getPathInfo());
+            req.getRequestDispatcher("auth.jsp").forward(req,resp);
         }
     }
 }
