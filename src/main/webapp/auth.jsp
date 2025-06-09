@@ -26,7 +26,7 @@
         </div>
 
         <div class="auth-form-container">
-            <form id="login-form" action="${pageContext.request.contextPath}/auth/signin" method="post"
+            <form id="login-form" action="${pageContext.request.contextPath}/auth/signin" method="POST"
                   class="auth-form active">
                 <div class="form-group">
                     <label for="login-username">Email</label>
