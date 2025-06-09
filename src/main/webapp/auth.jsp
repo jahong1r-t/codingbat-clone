@@ -40,7 +40,7 @@
                 <p class="error-message" id="login-error"></p>
             </form>
 
-            <form id="signup-form" action="${pageContext.request.contextPath}/auth/signup" method="post"
+            <form id="signup-form" action="${pageContext.request.contextPath}/auth/signup" method="POST"
                   class="auth-form">
                 <div class="form-group">
                     <label for="signup-name">Full name</label>
