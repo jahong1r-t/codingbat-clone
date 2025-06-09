@@ -73,6 +73,25 @@
         </div>
 
         <div class="problem-list" id="problem-list">
+
+            <%--@elvariable id="problems" type="java.util.List"--%>
+            <c:forEach items="${problems}" var="p">
+                <div class="problem-card">
+                    <div class="problem-status">
+                        <span class="status-icon"></span>
+                    </div>
+                    <div class="problem-info">
+                        <h3 class="problem-title">Longest Substring ${p.title}</h3>
+                        <div class="problem-meta">
+                            <span class="problem-difficulty difficulty-medium">Medium</span>
+                            <span class="problem-completion">In Progress</span>
+                        </div>
+                    </div>
+                    <div class="problem-action">
+                        <button class="btn btn-primary solve-btn">Continue</button>
+                    </div>
+                </div>
+            </c:forEach>
             <div class="problem-card">
                 <div class="problem-status">
                     <span class="status-icon"></span>
@@ -96,22 +115,6 @@
                     <span class="status-icon"></span>
                 </div>
                 <div class="problem-info">
-                    <h3 class="problem-title">Longest Substring</h3>
-                    <div class="problem-meta">
-                        <span class="problem-difficulty difficulty-medium">Medium</span>
-                        <span class="problem-completion">In Progress</span>
-                    </div>
-                </div>
-                <div class="problem-action">
-                    <button class="btn btn-primary solve-btn">Continue</button>
-                </div>
-            </div>
-
-            <div class="problem-card">
-                <div class="problem-status">
-                    <span class="status-icon"></span>
-                </div>
-                <div class="problem-info">
                     <h3 class="problem-title">Container With Most Water</h3>
                     <div class="problem-meta">
                         <span class="problem-difficulty difficulty-hard">Hard</span>
@@ -122,7 +125,6 @@
                     <button class="btn btn-primary solve-btn">Solve</button>
                 </div>
             </div>
-
         </div>
     </main>
 </div>

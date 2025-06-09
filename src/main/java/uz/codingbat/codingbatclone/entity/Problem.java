@@ -1,6 +1,10 @@
 package uz.codingbat.codingbatclone.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import uz.codingbat.codingbatclone.entity.enums.Difficulty;
 
 import java.util.HashSet;
@@ -8,6 +12,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Problem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
