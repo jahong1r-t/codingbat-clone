@@ -22,11 +22,9 @@ public class MainService {
             EntityManager entityManager = jpaConnection.entityManager();
             List<Problem> problems = entityManager.createQuery("select p from Problem p", Problem.class).getResultList();
             req.setAttribute("problems", problems);
-            entityManager.close();
-
-            problems.forEach(System.out::println);
-
             req.getRequestDispatcher("index.jsp").forward(req, resp);
+
+            entityManager.close();
         }
     }
 

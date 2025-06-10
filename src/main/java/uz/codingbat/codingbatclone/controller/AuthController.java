@@ -19,8 +19,9 @@ public class AuthController extends HttpServlet {
             req.getRequestDispatcher("auth.jsp").forward(req, resp);
         } else if ("/signup".equals(req.getPathInfo())) {
             req.getRequestDispatcher("auth.jsp").forward(req, resp);
+        } else {
+            req.getRequestDispatcher("auth.jsp").forward(req, resp);
         }
-        req.getRequestDispatcher("auth.jsp").forward(req, resp);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class AuthController extends HttpServlet {
         } else if ("/logout".equals(req.getPathInfo())) {
             authService.logOut(req, resp);
         } else {
-            req.getRequestDispatcher("auth.jsp").forward(req,resp);
+            req.getRequestDispatcher("auth.jsp").forward(req, resp);
         }
     }
 }
