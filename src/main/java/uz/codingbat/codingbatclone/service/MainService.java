@@ -1,7 +1,6 @@
 package uz.codingbat.codingbatclone.service;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NamedQuery;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -54,6 +53,7 @@ public class MainService {
             req.setAttribute("problems", problems);
             req.setAttribute("totalPages", totalPages);
             req.setAttribute("currentPage", currentPage);
+            req.setAttribute("filter", "all");
 
             req.getRequestDispatcher("index.jsp").forward(req, resp);
             entityManager.close();
