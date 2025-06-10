@@ -1,6 +1,7 @@
 package uz.codingbat.codingbatclone.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NamedQuery;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,13 +18,44 @@ public class MainService {
         if (req.getSession().getAttribute("user_id") != null
                 && req.getSession().getAttribute("role") == "USER"
                 && req.getSession().getAttribute("is_authenticated").equals("true")) {
-
         } else {
             EntityManager entityManager = jpaConnection.entityManager();
-            List<Problem> problems = entityManager.createQuery("select p from Problem p", Problem.class).getResultList();
-            req.setAttribute("problems", problems);
-            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            String pageParam = req.getParameter("page");
+            String sizeParam = req.getParameter("size");
 
+            int page = 0;
+            if (pageParam != null) {
+                page = Integer.parseInt(pageParam) - 1;
+                if (page < 0) page = 0;
+            }
+
+            int size = 16;
+            if (sizeParam != null) {
+                size = Integer.parseInt(sizeParam);
+                if (size <= 0) size = 16;
+            }
+
+            List<Problem> problems = entityManager
+                    .createQuery("select p from Problem p", Problem.class)
+                    .setFirstResult(page * size)
+                    .setMaxResults(size)
+                    .getResultList();
+
+            long totalProblems = entityManager.createQuery("select count(p.id) from Problem p", Long.class).getSingleResult();
+            int totalPages = (int) Math.ceil((double) totalProblems / size);
+            int currentPage = page + 1;
+
+            int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
+            int previous = (currentPage > 1) ? currentPage - 1 : 1;
+
+            req.setAttribute("next", next);
+            req.setAttribute("previous", previous);
+            req.setAttribute("size", size);
+            req.setAttribute("problems", problems);
+            req.setAttribute("totalPages", totalPages);
+            req.setAttribute("currentPage", currentPage);
+
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
             entityManager.close();
         }
     }
