@@ -39,7 +39,8 @@
                             <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <form action="${pageContext.request.contextPath}/auth/logout" method="post" class="dropdown-item-form">
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post"
+                                  class="dropdown-item-form">
                                 <button type="submit" class="dropdown-item logout-btn">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </button>
@@ -73,19 +74,16 @@
         <!-- Filters -->
         <div class="filters">
             <a href="${pageContext.request.contextPath}/">
-                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn ${filter == "all" ?'active':''}" data-filter="all">All</button>
             </a>
             <a href="${pageContext.request.contextPath}/?filter=easy">
-                <button class="filter-btn" data-filter="easy">Easy</button>
+                <button class="filter-btn ${filter == "easy" ?'active':''}" data-filter="easy">Easy</button>
             </a>
             <a href="${pageContext.request.contextPath}/?filter=medium">
-                <button class="filter-btn" data-filter="medium">Medium</button>
+                <button class="filter-btn ${filter == "medium" ?'active':''}" data-filter="medium">Medium</button>
             </a>
             <a href="${pageContext.request.contextPath}/?filter=hard">
-                <button class="filter-btn" data-filter="hard">Hard</button>
-            </a>
-            <a href="${pageContext.request.contextPath}/?filter=completed">
-                <button class="filter-btn" data-filter="completed">Completed</button>
+                <button class="filter-btn ${filter == "hard" ?'active':''}" data-filter="hard">Hard</button>
             </a>
         </div>
 
@@ -145,7 +143,7 @@
     <!-- Previous Button -->
     <c:choose>
         <c:when test="${previous > 0}">
-            <a href="?page=${previous}" class="pagination-btn">
+            <a href="?filter=${filter}&page=${previous}" class="pagination-btn">
                 <i class="fas fa-chevron-left"></i> Prev
             </a>
         </c:when>
@@ -160,7 +158,7 @@
     <c:set var="totalPages" value="${totalPages}"/>
     <c:set var="currentPage" value="${currentPage}"/>
     <c:forEach begin="1" end="${totalPages}" var="i">
-        <a href="?page=${i}" class="pagination-btn ${i == currentPage ? 'active' : ''}">
+        <a href="?filter=${filter}&page=${i}" class="pagination-btn ${i == currentPage ? 'active' : ''}">
                 ${i}
         </a>
     </c:forEach>
@@ -168,7 +166,7 @@
     <!-- Next Button -->
     <c:choose>
         <c:when test="${next <= totalPages}">
-            <a href="?page=${next}" class="pagination-btn">
+            <a href="?filter=${filter}&page=${next}" class="pagination-btn">
                 Next <i class="fas fa-chevron-right"></i>
             </a>
         </c:when>
