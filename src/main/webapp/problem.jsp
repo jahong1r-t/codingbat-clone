@@ -1,10 +1,12 @@
+<%--@elvariable id="problem" type="com.example.Problem"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>CodingBat - Problem</title>
+    <title>CodingBat - ${problem.title}</title>
     <link rel="icon" type="image/x-icon" href="assets/img/logo.png">
 
     <!-- Styles -->
@@ -51,63 +53,36 @@
             <!-- Problem Description -->
             <div class="problem-description-panel">
                 <div class="problem-header">
-                    <h2 id="problem-title">Fibonacci Number</h2>
-                    <span id="problem-difficulty" class="difficulty-badge difficulty-medium">Medium</span>
+                    <h2 id="problem-title"><c:out value="${problem.title}"/></h2>
+                    <span id="problem-difficulty" class="difficulty-badge difficulty-${problem.difficulty.name().toLowerCase()}">
+                        <c:out value="${problem.difficulty}"/>
+                    </span>
                 </div>
                 <div class="problem-description" id="problem-description">
-                    <p>The Fibonacci numbers, commonly denoted F(n), form a sequence such that each number is the sum of
-                        the two preceding ones, starting from 0 and 1.</p>
-                    <p>That is: F(0) = 0, F(1) = 1, and F(n) = F(n-1) + F(n-2) for n > 1.</p>
-                    <p>Given n, calculate F(n).</p>
-                    <p><strong>Example:</strong></p>
-                    <pre>Input: n = 4
-Output: 3
-Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.</pre>
+                    <p><c:out value="${problem.description}" escapeXml="false"/></p>
                 </div>
 
                 <!-- Example Test Cases -->
                 <div class="test-cases-section">
                     <h3>Example Test Cases</h3>
                     <div class="test-cases" id="example-test-cases">
-
-                        <!-- Test Case 1 -->
-                        <div class="test-case">
-                            <div class="test-case-header">
-                                <span class="test-case-title">Test Case #1</span>
-                            </div>
-                            <div class="test-case-content">
-                                <div class="test-input">
-                                    <strong>Input:</strong>
-                                    <pre class="code-block">4</pre>
+                        <c:forEach var="testCase" items="${problem.testCases}" varStatus="loop">
+                            <div class="test-case">
+                                <div class="test-case-header">
+                                    <span class="test-case-title">Test Case #${loop.count}</span>
                                 </div>
-                                <div class="test-expected">
-                                    <strong>Expected Output:</strong>
-                                    <pre class="code-block">3</pre>
-                                </div>
-                                <div class="test-explanation">
-                                    <strong>Explanation:</strong>
-                                    <pre class="code-block">F(4) = F(3) + F(2) = 2 + 1 = 3</pre>
+                                <div class="test-case-content">
+                                    <div class="test-input">
+                                        <strong>Input:</strong>
+                                        <pre class="code-block"><c:out value="${testCase.input}"/></pre>
+                                    </div>
+                                    <div class="test-expected">
+                                        <strong>Expected Output:</strong>
+                                        <pre class="code-block"><c:out value="${testCase.expectedOutput}"/></pre>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Test Case 2 -->
-                        <div class="test-case">
-                            <div class="test-case-header">
-                                <span class="test-case-title">Test Case #2</span>
-                            </div>
-                            <div class="test-case-content">
-                                <div class="test-input">
-                                    <strong>Input:</strong>
-                                    <pre class="code-block">10</pre>
-                                </div>
-                                <div class="test-expected">
-                                    <strong>Expected Output:</strong>
-                                    <pre class="code-block">55</pre>
-                                </div>
-                            </div>
-                        </div>
-
+                        </c:forEach>
                     </div>
                 </div>
             </div>
@@ -135,13 +110,7 @@ Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.</pre>
                     <div class="code-editor-wrapper">
                         <div class="line-numbers" id="line-numbers">1<br>2<br>3<br>4</div>
                         <label for="code-editor"></label>
-                        <textarea id="code-editor" class="code-editor">
-public class Solution {
-    public int fibonacci(int n) {
-        // Write your code here
-    }
-}
-            </textarea>
+                        <textarea id="code-editor" class="code-editor"><c:out value="${problem.codeTemplate}"/></textarea>
                     </div>
                 </div>
 
@@ -150,50 +119,14 @@ public class Solution {
                     <div class="results-header">
                         <h3>Test Results</h3>
                         <div class="results-summary" id="results-summary">
-                            <span class="status-passed">Passed: 1</span>
-                            <span class="status-failed">Failed: 1</span>
+                            <!-- Test natijalari dinamik ravishda JavaScript yoki boshqa servlet orqali yangilanadi -->
+                            <span class="status-passed">Passed: 0</span>
+                            <span class="status-failed">Failed: 0</span>
                             <span class="status-error">Error: 0</span>
                         </div>
                     </div>
-
                     <div class="test-results" id="test-results">
-                        <!-- Passed Case -->
-                        <div class="test-result">
-                            <div class="test-result-header">
-                                <span class="test-result-title">Test Case #1</span>
-                                <span class="test-result-status status-passed">Passed</span>
-                            </div>
-                            <div class="test-result-content">
-                                <div class="test-input"><strong>Input:</strong>
-                                    <pre class="code-block">4</pre>
-                                </div>
-                                <div class="test-expected"><strong>Expected Output:</strong>
-                                    <pre class="code-block">3</pre>
-                                </div>
-                                <div class="test-actual"><strong>Your Output:</strong>
-                                    <pre class="code-block">3</pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Failed Case -->
-                        <div class="test-result">
-                            <div class="test-result-header">
-                                <span class="test-result-title">Test Case #2</span>
-                                <span class="test-result-status status-failed">Failed</span>
-                            </div>
-                            <div class="test-result-content">
-                                <div class="test-input"><strong>Input:</strong>
-                                    <pre class="code-block">10</pre>
-                                </div>
-                                <div class="test-expected"><strong>Expected Output:</strong>
-                                    <pre class="code-block">55</pre>
-                                </div>
-                                <div class="test-actual"><strong>Your Output:</strong>
-                                    <pre class="code-block">Wrong output</pre>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Test natijalari JavaScript yoki backenddan keladi -->
                     </div>
                 </div>
             </div>
@@ -237,7 +170,6 @@ public class Solution {
     </div>
 </template>
 
-<!-- Local Scripts -->
 <script src="assets/js/problem.js"></script>
 <script src="assets/js/theme.js"></script>
 

@@ -130,6 +130,45 @@
     </div>
 </template>
 
+<div class="pagination">
+    <!-- Previous Button -->
+    <c:choose>
+        <c:when test="${previous > 0}">
+            <a href="?page=${previous}&size=${size}" class="pagination-btn">
+                <i class="fas fa-chevron-left"></i> Prev
+            </a>
+        </c:when>
+        <c:otherwise>
+            <span class="pagination-btn disabled">
+                <i class="fas fa-chevron-left"></i> Prev
+            </span>
+        </c:otherwise>
+    </c:choose>
+
+    <!-- Page Numbers -->
+    <c:set var="totalPages" value="${totalPages}"/>
+    <c:set var="currentPage" value="${currentPage}"/>
+    <c:forEach begin="1" end="${totalPages}" var="i">
+        <a href="?page=${i}&size=${size}" class="pagination-btn ${i == currentPage ? 'active' : ''}">
+                ${i}
+        </a>
+    </c:forEach>
+
+    <!-- Next Button -->
+    <c:choose>
+        <c:when test="${next <= totalPages}">
+            <a href="?page=${next}&size=${size}" class="pagination-btn">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+        </c:when>
+        <c:otherwise>
+            <span class="pagination-btn disabled">
+                  Next<i class="fas fa-chevron-right"></i>
+            </span>
+        </c:otherwise>
+    </c:choose>
+</div>
+
 <script src="${pageContext.request.contextPath}/assets/js/theme.js"></script>
 
 </body>
