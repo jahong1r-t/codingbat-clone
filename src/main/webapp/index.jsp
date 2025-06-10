@@ -29,14 +29,20 @@
 
             <c:choose>
                 <c:when test="${sessionScope.is_authenticated == true}">
-                    <a href="${pageContext.request.contextPath}/profile">
-                        <button class="btn btn-primary">Profile</button>
-                    </a>
-                    <form action="${pageContext.request.contextPath}/auth/logout" method="post">
-                        <button type="submit" class="btn btn-primary">Logout</button>
-                    </form>
-                </c:when>
-                <c:otherwise>
+                    <div class="profile-dropdown">
+                        <div class="profile-avatar" onclick="toggleProfileMenu()">
+                            <img src="${pageContext.request.contextPath}/assets/img/profile-placeholder.png" alt="Profile" class="avatar">
+                        </div>
+                        <div id="profile-menu" class="profile-menu hidden">
+                            <a href="${pageContext.request.contextPath}/profile">
+                                <button class="btn btn-primary">Profile</button>
+                            </a>
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post">
+                                <button type="submit" class="btn btn-primary">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </c:otherwise>
                     <a href="${pageContext.request.contextPath}/auth?tab=signin">
                         <button id="sign-in-btn" class="btn btn-primary">Sign In</button>
                     </a>
@@ -134,7 +140,7 @@
     <!-- Previous Button -->
     <c:choose>
         <c:when test="${previous > 0}">
-            <a href="?page=${previous}&size=${size}" class="pagination-btn">
+            <a href="?page=${previous}" class="pagination-btn">
                 <i class="fas fa-chevron-left"></i> Prev
             </a>
         </c:when>
@@ -149,7 +155,7 @@
     <c:set var="totalPages" value="${totalPages}"/>
     <c:set var="currentPage" value="${currentPage}"/>
     <c:forEach begin="1" end="${totalPages}" var="i">
-        <a href="?page=${i}&size=${size}" class="pagination-btn ${i == currentPage ? 'active' : ''}">
+        <a href="?page=${i}" class="pagination-btn ${i == currentPage ? 'active' : ''}">
                 ${i}
         </a>
     </c:forEach>
@@ -157,7 +163,7 @@
     <!-- Next Button -->
     <c:choose>
         <c:when test="${next <= totalPages}">
-            <a href="?page=${next}&size=${size}" class="pagination-btn">
+            <a href="?page=${next}" class="pagination-btn">
                 Next <i class="fas fa-chevron-right"></i>
             </a>
         </c:when>
@@ -170,6 +176,7 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/theme.js"></script>
+
 
 </body>
 </html>
