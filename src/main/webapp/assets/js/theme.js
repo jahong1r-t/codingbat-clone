@@ -35,3 +35,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const profileBtn = document.querySelector('.profile-btn');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (profileBtn && dropdownMenu) {
+        profileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isExpanded = profileBtn.getAttribute('aria-expanded') === 'true';
+            profileBtn.setAttribute('aria-expanded', !isExpanded);
+            dropdownMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!profileBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+                profileBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+});

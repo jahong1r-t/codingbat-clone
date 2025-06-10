@@ -25,14 +25,31 @@
                 <i class="fas fa-moon"></i>
             </div>
 
+            <a href="${pageContext.request.contextPath}/">
+                <button id="problems-link" class="btn btn-primary">
+                    <i class="fas fa-list"></i> Problems
+                </button>
+            </a>
+
             <c:choose>
                 <c:when test="${sessionScope.is_authenticated == true}">
-                    <a href="${pageContext.request.contextPath}/profile">
-                        <button class="btn btn-primary">Profile</button>
-                    </a>
-                    <form action="${pageContext.request.contextPath}/auth/logout">
-                        <button type="submit" class="btn btn-primary">Logout</button>
-                    </form>
+                    <div class="profile-dropdown">
+                        <button class="btn btn-primary profile-btn" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> Profile
+                            </a>
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post" class="dropdown-item-form">
+                                <button type="submit" class="dropdown-item logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </c:when>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/auth?tab=signin">
@@ -45,6 +62,7 @@
             </c:choose>
         </div>
     </nav>
+
 
     <main class="profile-container">
         <div class="profile-header">
@@ -331,41 +349,6 @@
                 activityGrid.appendChild(square);
             }
         }
-
-        // Modal functionality
-        const editProfileBtn = document.getElementById('edit-profile-btn');
-        const editProfileModal = document.getElementById('edit-profile-modal');
-        const editProfileForm = document.getElementById('edit-profile-form');
-        const cancelEditBtn = document.getElementById('cancel-edit-btn');
-        const closeBtn = document.querySelector('.close-btn');
-
-        function openEditModal() {
-            editProfileModal.classList.add('active');
-        }
-
-        function closeEditModal() {
-            editProfileModal.classList.remove('active');
-        }
-
-        function saveProfile(e) {
-            e.preventDefault();
-            alert('Profile updated successfully! (This is a static demo)');
-            closeEditModal();
-        }
-
-        // Event listeners
-        editProfileBtn.addEventListener('click', openEditModal);
-        cancelEditBtn.addEventListener('click', closeEditModal);
-        closeBtn.addEventListener('click', closeEditModal);
-        editProfileForm.addEventListener('submit', saveProfile);
-
-        // Close modal when clicking outside
-        editProfileModal.addEventListener('click', (e) => {
-            if (e.target === editProfileModal) {
-                closeEditModal();
-            }
-        });
-
         generateStaticActivityGrid();
     });
 </script>

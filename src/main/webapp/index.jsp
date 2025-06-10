@@ -30,19 +30,24 @@
             <c:choose>
                 <c:when test="${sessionScope.is_authenticated == true}">
                     <div class="profile-dropdown">
-                        <div class="profile-avatar" onclick="toggleProfileMenu()">
-                            <img src="${pageContext.request.contextPath}/assets/img/profile-placeholder.png" alt="Profile" class="avatar">
-                        </div>
-                        <div id="profile-menu" class="profile-menu hidden">
-                            <a href="${pageContext.request.contextPath}/profile">
-                                <button class="btn btn-primary">Profile</button>
+                        <button class="btn btn-primary profile-btn" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <form action="${pageContext.request.contextPath}/auth/logout" method="post">
-                                <button type="submit" class="btn btn-primary">Logout</button>
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post" class="dropdown-item-form">
+                                <button type="submit" class="dropdown-item logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
                             </form>
                         </div>
                     </div>
-                </c:otherwise>
+                </c:when>
+                <c:otherwise>
                     <a href="${pageContext.request.contextPath}/auth?tab=signin">
                         <button id="sign-in-btn" class="btn btn-primary">Sign In</button>
                     </a>
@@ -176,7 +181,6 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/assets/js/theme.js"></script>
-
 
 </body>
 </html>
