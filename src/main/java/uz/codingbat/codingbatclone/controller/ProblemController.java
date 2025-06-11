@@ -19,12 +19,11 @@ public class ProblemController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         EntityManager entityManager = jpaConnection.entityManager();
-        Problem problem = entityManager.createQuery(
-                        "SELECT p FROM Problem p LEFT JOIN FETCH p.testCases WHERE p.id = :id",
-                        Problem.class
-                )
+        Problem problem = entityManager
+                .createQuery("SELECT p FROM Problem p LEFT JOIN FETCH p.testCases WHERE p.id = :id", Problem.class)
                 .setParameter("id", UUID.fromString(req.getParameter("id")))
                 .getSingleResult();
+
         req.setAttribute("problem", problem);
         req.getRequestDispatcher("/problem.jsp").forward(req, resp);
         entityManager.close();
