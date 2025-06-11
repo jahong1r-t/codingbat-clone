@@ -207,7 +207,7 @@
             <span class="test-result-status"></span>
         </div>
         <div class="test-result-content">
-            <div class="test-input"><strong>Input:</strong>
+            <div class="test-input"><strong>Input:</strong  >
                 <pre class="code-block"></pre>
             </div>
             <div class="test-expected"><strong>Expected Output:</strong>
@@ -219,33 +219,6 @@
         </div>
     </div>
 </template>
-
-<%--<script>--%>
-<%--    const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {--%>
-<%--        mode: "text/x-java",--%>
-<%--        theme: "dracula",--%>
-<%--        lineNumbers: true,--%>
-<%--        autoCloseBrackets: true--%>
-<%--    });--%>
-
-<%--    // Form submit hodisasida CodeMirror'dan qiymat olish--%>
-<%--    document.querySelectorAll("form").forEach(form => {--%>
-<%--        form.addEventListener("submit", function (event) {--%>
-<%--            const hiddenInput = form.querySelector("input[name='code']");--%>
-<%--            if (hiddenInput) {--%>
-<%--                hiddenInput.value = editor.getValue(); // CodeMirror'dan yangi qiymatni olish--%>
-<%--            } else {--%>
-<%--                console.error("Hidden input topilmadi!");--%>
-<%--            }--%>
-<%--        });--%>
-<%--    });--%>
-
-<%--    // Kod muharriri o'zgarganda log qilish (debug uchun)--%>
-<%--    editor.on("change", function () {--%>
-<%--        console.log("Kod muharriri yangilandi:", editor.getValue());--%>
-<%--    });--%>
-<%--</script>--%>
-
 
 <script src="assets/js/problem.js"></script>
 <script src="assets/js/theme.js"></script>
