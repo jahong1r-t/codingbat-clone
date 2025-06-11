@@ -5,20 +5,19 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public class JpaConnection {
-    private static EntityManagerFactory entityManagerFactory;
-    private static JpaConnection jpaConnection;
+    private static final EntityManagerFactory entityManagerFactory =
+            Persistence.createEntityManagerFactory("codingbat-orm");
 
-    public EntityManager entityManager() {
-        if (entityManagerFactory == null) {
-            entityManagerFactory = Persistence.createEntityManagerFactory("codingbat-orm");
-        }
-        return entityManagerFactory.createEntityManager();
+    private static final JpaConnection jpaConnection = new JpaConnection();
+
+    private JpaConnection() {
     }
 
     public static JpaConnection getInstance() {
-        if (jpaConnection == null) {
-            jpaConnection = new JpaConnection();
-        }
         return jpaConnection;
+    }
+
+    public EntityManager entityManager() {
+        return entityManagerFactory.createEntityManager();
     }
 }

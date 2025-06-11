@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Initialize CodeMirror
     window.codeMirrorEditor = CodeMirror.fromTextArea(editorElement, {
         mode: 'text/x-java',
         theme: 'dracula',
@@ -20,9 +21,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Set editor size and z-index
     codeMirrorEditor.setSize('100%', '100%');
     editorElement.style.zIndex = '10';
 
+    // Form submission: Update hidden input with CodeMirror content
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function (event) {
+            const hiddenInput = form.querySelector("input[name='code']");
+            if (hiddenInput) {
+                hiddenInput.value = codeMirrorEditor.getValue(); // Use codeMirrorEditor
+                console.log("Form submitted with code:", hiddenInput.value); // Debug
+            } else {
+                console.error("Hidden input not found!");
+            }
+        });
+    });
+
+    // Update line numbers
     function updateLineNumbers() {
         const lines = codeMirrorEditor.lineCount();
         const lineNumbers = document.getElementById('line-numbers');
@@ -32,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Sync line numbers with editor scroll
     codeMirrorEditor.on('scroll', () => {
         const scrollInfo = codeMirrorEditor.getScrollInfo();
         const lineNumbers = document.getElementById('line-numbers');
@@ -40,12 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Update line numbers on content change
     codeMirrorEditor.on('change', () => {
         updateLineNumbers();
+        console.log("Editor content changed:", codeMirrorEditor.getValue()); // Debug
     });
 
+    // Initial line numbers update
     updateLineNumbers();
 
+    // Format button handler
     const formatBtn = document.getElementById('format-btn');
     if (formatBtn) {
         formatBtn.addEventListener('click', () => {
