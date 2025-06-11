@@ -4,6 +4,7 @@
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    margin-top: 60px; /* Add this to match the navbar height */
 }
 
 .profile-header {
@@ -15,6 +16,29 @@
     padding: var(--space-3);
     margin-bottom: var(--space-3);
     box-shadow: var(--shadow-sm);
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    width: 150px; /* Fixed width for the button container */
+}
+
+.profile-actions .btn {
+    width: 100%; /* Buttons take full width of the container */
+    justify-content: center;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-md);
+}
+
+.logout-form {
+    width: 100%; /* Ensure the form takes full width */
+}
+
+.logout-form .btn {
+    width: 100%; /* Ensure the logout button matches the edit button */
 }
 
 .profile-avatar {
@@ -264,5 +288,18 @@
 
     .activity-grid {
         grid-template-columns: repeat(20, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-actions {
+        width: 100%; /* Full width on smaller screens */
+        max-width: 200px; /* Limit max width for aesthetics */
+        margin-top: var(--space-2);
     }
 }

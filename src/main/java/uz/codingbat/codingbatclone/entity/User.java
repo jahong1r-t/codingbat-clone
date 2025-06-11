@@ -23,9 +23,9 @@ public class User {
     private String fullName;
     private String email;
     private String password;
-    private Integer solvedProblemsCount;
-    private Integer currentStreak;
-    private Integer bestStreak;
+    private int solvedProblemsCount;
+    private int currentStreak;
+    private int bestStreak;
     @Enumerated(EnumType.STRING)
     private Role role;
 

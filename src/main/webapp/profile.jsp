@@ -43,7 +43,8 @@
                             <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <form action="${pageContext.request.contextPath}/auth/logout" method="post" class="dropdown-item-form">
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post"
+                                  class="dropdown-item-form">
                                 <button type="submit" class="dropdown-item logout-btn">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </button>
@@ -63,20 +64,25 @@
         </div>
     </nav>
 
-
     <main class="profile-container">
         <div class="profile-header">
             <div class="profile-avatar">
                 <i class="fas fa-user-circle"></i>
             </div>
             <div class="profile-info">
-                <h2>john_developer</h2>
-                <p>john.doe@example.com</p>
-                <span class="role-badge">User</span>
+                <h2>${user.fullName}</h2>
+                <p>${user.email}</p>
             </div>
-            <button id="edit-profile-btn" class="btn btn-primary">
-                <i class="fas fa-edit"></i> Edit Profile
-            </button>
+            <div class="profile-actions">
+                <button id="edit-profile-btn" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+                <form action="${pageContext.request.contextPath}/auth/logout" method="post" class="logout-form">
+                    <button id="logout-btn" type="submit" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </div>
         </div>
 
         <div class="profile-stats">
@@ -86,16 +92,7 @@
                 </div>
                 <div class="stat-content">
                     <h3>Problems Solved</h3>
-                    <p>47</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-tasks"></i>
-                </div>
-                <div class="stat-content">
-                    <h3>Tests Completed</h3>
-                    <p>12</p>
+                    <p>${user.solvedProblemsCount}</p>
                 </div>
             </div>
             <div class="stat-card">
@@ -104,7 +101,7 @@
                 </div>
                 <div class="stat-content">
                     <h3>Current Streak</h3>
-                    <p>7 days</p>
+                    <p>${user.currentStreak} days</p>
                 </div>
             </div>
             <div class="stat-card">
@@ -113,7 +110,7 @@
                 </div>
                 <div class="stat-content">
                     <h3>Best Streak</h3>
-                    <p>23 days</p>
+                    <p>${user.bestStreak} days</p>
                 </div>
             </div>
         </div>
@@ -184,51 +181,6 @@
                         <span class="activity-time">3 days ago</span>
                     </div>
                 </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Completed Data Structures Test with 92% score</p>
-                        <span class="activity-time">4 days ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Solved "Fibonacci Sequence" problem</p>
-                        <span class="activity-time">5 days ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Solved "Palindrome Check" problem</p>
-                        <span class="activity-time">6 days ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Solved "Array Rotation" problem</p>
-                        <span class="activity-time">1 week ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Completed Algorithms Test with 78% score</p>
-                        <span class="activity-time">1 week ago</span>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
@@ -241,27 +193,19 @@
                 <button class="close-btn">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="edit-profile-form">
+                <form action="${pageContext.request.contextPath}/profile/edit" method="post">
                     <div class="form-group">
-                        <label for="edit-username">Username</label>
-                        <input type="text" id="edit-username" value="john_developer" required>
+                        <label for="edit-username">Full name</label>
+                        <input type="text" id="edit-username" value="${user.fullName}" required>
                     </div>
                     <div class="form-group">
                         <label for="edit-email">Email</label>
-                        <input type="email" id="edit-email" value="john.doe@example.com">
+                        <input type="email" id="edit-email" value="${user.email}">
                     </div>
                     <div class="form-group">
-                        <label for="edit-bio">Bio</label>
-                        <textarea id="edit-bio" rows="3" placeholder="Tell us about yourself...">Passionate Java developer with 3+ years of experience. Love solving algorithmic challenges and building scalable applications.</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-location">Location</label>
-                        <input type="text" id="edit-location" value="San Francisco, CA" placeholder="City, Country">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-website">Website</label>
-                        <input type="url" id="edit-website" value="https://johndoe.dev"
-                               placeholder="https://yourwebsite.com">
+                        <label for="edit-website">Password</label>
+                        <input type="password" id="edit-website" value="${user.password}"
+                               placeholder="* * * * * *">
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn btn-outline" id="cancel-edit-btn">Cancel</button>
@@ -273,87 +217,8 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Generate static activity grid
-        function generateStaticActivityGrid() {
-            const activityGrid = document.getElementById('activity-grid');
-
-            // Static activity data for demonstration
-            const staticActivityData = {
-                // Recent days with high activity
-                '2024-01-15': 4, '2024-01-14': 3, '2024-01-13': 2, '2024-01-12': 1,
-                '2024-01-11': 3, '2024-01-10': 2, '2024-01-09': 4, '2024-01-08': 1,
-                '2024-01-07': 2, '2024-01-06': 3, '2024-01-05': 1, '2024-01-04': 2,
-                '2024-01-03': 4, '2024-01-02': 3, '2024-01-01': 2,
-
-                // December 2023
-                '2023-12-31': 1, '2023-12-30': 2, '2023-12-29': 3, '2023-12-28': 1,
-                '2023-12-27': 2, '2023-12-26': 1, '2023-12-25': 0, '2023-12-24': 1,
-                '2023-12-23': 3, '2023-12-22': 2, '2023-12-21': 4, '2023-12-20': 3,
-                '2023-12-19': 2, '2023-12-18': 1, '2023-12-17': 2, '2023-12-16': 3,
-                '2023-12-15': 1, '2023-12-14': 2, '2023-12-13': 4, '2023-12-12': 3,
-                '2023-12-11': 2, '2023-12-10': 1, '2023-12-09': 3, '2023-12-08': 2,
-                '2023-12-07': 1, '2023-12-06': 2, '2023-12-05': 3, '2023-12-04': 1,
-                '2023-12-03': 2, '2023-12-02': 4, '2023-12-01': 3,
-
-                // November 2023 (some gaps)
-                '2023-11-30': 2, '2023-11-29': 1, '2023-11-28': 3, '2023-11-27': 2,
-                '2023-11-26': 0, '2023-11-25': 0, '2023-11-24': 1, '2023-11-23': 2,
-                '2023-11-22': 3, '2023-11-21': 1, '2023-11-20': 2, '2023-11-19': 4,
-                '2023-11-18': 3, '2023-11-17': 2, '2023-11-16': 1, '2023-11-15': 3,
-                '2023-11-14': 2, '2023-11-13': 1, '2023-11-12': 0, '2023-11-11': 0,
-                '2023-11-10': 2, '2023-11-09': 3, '2023-11-08': 1, '2023-11-07': 2,
-                '2023-11-06': 4, '2023-11-05': 3, '2023-11-04': 2, '2023-11-03': 1,
-                '2023-11-02': 3, '2023-11-01': 2,
-
-                // October 2023
-                '2023-10-31': 1, '2023-10-30': 2, '2023-10-29': 3, '2023-10-28': 1,
-                '2023-10-27': 2, '2023-10-26': 4, '2023-10-25': 3, '2023-10-24': 2,
-                '2023-10-23': 1, '2023-10-22': 3, '2023-10-21': 2, '2023-10-20': 1,
-                '2023-10-19': 2, '2023-10-18': 3, '2023-10-17': 1, '2023-10-16': 2,
-                '2023-10-15': 4, '2023-10-14': 3, '2023-10-13': 2, '2023-10-12': 1,
-                '2023-10-11': 3, '2023-10-10': 2, '2023-10-09': 1, '2023-10-08': 2,
-                '2023-10-07': 3, '2023-10-06': 1, '2023-10-05': 2, '2023-10-04': 4,
-                '2023-10-03': 3, '2023-10-02': 2, '2023-10-01': 1
-            };
-
-            // Generate 365 days
-            const today = new Date('2024-01-15'); // Fixed date for static demo
-            const startDate = new Date(today);
-            startDate.setDate(today.getDate() - 364);
-
-            activityGrid.innerHTML = '';
-
-            for (let i = 0; i < 365; i++) {
-                const currentDate = new Date(startDate);
-                currentDate.setDate(startDate.getDate() + i);
-                const dateStr = currentDate.toISOString().split('T')[0];
-
-                const square = document.createElement('div');
-                square.className = 'activity-square';
-
-                const activityCount = staticActivityData[dateStr] || 0;
-                let level = 0;
-
-                if (activityCount > 0) {
-                    if (activityCount >= 4) level = 4;
-                    else if (activityCount >= 3) level = 3;
-                    else if (activityCount >= 2) level = 2;
-                    else level = 1;
-                }
-
-                square.classList.add(`level-${level}`);
-                square.title = `${dateStr}: ${activityCount} activities`;
-
-                activityGrid.appendChild(square);
-            }
-        }
-        generateStaticActivityGrid();
-    });
-</script>
-
 <script src="assets/js/theme.js"></script>
+<script src="assets/js/profile.js"></script>
 
 </body>
 </html>

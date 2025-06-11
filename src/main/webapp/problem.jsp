@@ -76,7 +76,7 @@
         </div>
     </nav>
 
-    <main class="problem-container">
+    <main style="margin-top: 10px" class="problem-container">
         <div class="problem-content">
 
             <!-- Problem Description -->

@@ -90,7 +90,14 @@ body {
     transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
+/*.app-container {*/
+/*    min-height: 100vh;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+/* Add this after the .app-container rule */
 .app-container {
+    padding-top: 60px; /* Adjust this value based on your navbar height */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -238,12 +245,18 @@ input[type="checkbox"] {
 
 /* Navbar */
 .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 14.5px;
     background-color: var(--surface);
     border-bottom: 1px solid var(--border);
+    z-index: 1000; /* Ensure navbar stays above other content */
+    width: 100%;
 }
 
 .navbar-brand {
@@ -533,7 +546,7 @@ input[type="checkbox"] {
     padding: 0;
     cursor: pointer;
 }
-    
+
 /* Dark theme adjustments */
 .dark-theme .dropdown-menu {
     background-color: var(--surface-dark);
