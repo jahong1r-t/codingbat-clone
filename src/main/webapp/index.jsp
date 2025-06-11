@@ -74,7 +74,7 @@
         <!-- Filters -->
         <div class="filters">
             <a href="${pageContext.request.contextPath}/">
-                <button class="filter-btn ${filter == "all" ?'active':''}" data-filter="all">All</button>
+                <button class="filter-btn ${filter == null ?'active':''}" data-filter="all">All</button>
             </a>
             <a href="${pageContext.request.contextPath}/?filter=easy">
                 <button class="filter-btn ${filter == "easy" ?'active':''}" data-filter="easy">Easy</button>

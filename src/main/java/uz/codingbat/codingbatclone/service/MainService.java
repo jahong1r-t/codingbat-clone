@@ -37,28 +37,58 @@ public class MainService {
             }
 
 
-            List<Problem> problems = entityManager
-                    .createQuery("select p from Problem p ", Problem.class)
-                    .setFirstResult(page * size)
-                    .setMaxResults(size)
-                    .getResultList();
+            if (filter == null || filter.isEmpty()) {
+                List<Problem> problems = entityManager
+                        .createQuery("select p from Problem p", Problem.class)
+                        .setFirstResult(page * size)
+                        .setMaxResults(size)
+                        .getResultList();
 
-            Long totalProblems = entityManager.createQuery("select count(p.id) from Problem p", Long.class).getSingleResult();
+                Long totalProblems = entityManager
+                        .createQuery("select count(p.id) from Problem p", Long.class)
+                        .getSingleResult();
 
 
-            int totalPages = (int) Math.ceil((double) totalProblems / size);
+                int totalPages = (int) Math.ceil((double) totalProblems / size);
 
-            int currentPage = page + 1;
-            int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
-            int previous = (currentPage > 1) ? currentPage - 1 : 1;
+                int currentPage = page + 1;
+                int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
+                int previous = (currentPage > 1) ? currentPage - 1 : 1;
 
-            req.setAttribute("next", next);
-            req.setAttribute("previous", previous);
-            req.setAttribute("size", size);
-            req.setAttribute("problems", problems);
-            req.setAttribute("totalPages", totalPages);
-            req.setAttribute("currentPage", currentPage);
-            req.setAttribute("filter", filter);
+                req.setAttribute("next", next);
+                req.setAttribute("previous", previous);
+                req.setAttribute("size", size);
+                req.setAttribute("problems", problems);
+                req.setAttribute("totalPages", totalPages);
+                req.setAttribute("currentPage", currentPage);
+                req.setAttribute("filter", null);
+            } else {
+                List<Problem> problems = entityManager
+                        .createQuery("select p from Problem p where difficulty = :d", Problem.class)
+                        .setFirstResult(page * size)
+                        .setParameter("d", Difficulty.valueOf(filter.toUpperCase()))
+                        .setMaxResults(size)
+                        .getResultList();
+
+                Long totalProblems = entityManager.createQuery("select count(p.id) from Problem p where difficulty = :d", Long.class)
+                        .setParameter("d", Difficulty.valueOf(filter.toUpperCase()))
+                        .getSingleResult();
+
+
+                int totalPages = (int) Math.ceil((double) totalProblems / size);
+
+                int currentPage = page + 1;
+                int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
+                int previous = (currentPage > 1) ? currentPage - 1 : 1;
+
+                req.setAttribute("next", next);
+                req.setAttribute("previous", previous);
+                req.setAttribute("size", size);
+                req.setAttribute("problems", problems);
+                req.setAttribute("totalPages", totalPages);
+                req.setAttribute("currentPage", currentPage);
+                req.setAttribute("filter", filter);
+            }
 
 
             req.getRequestDispatcher("index.jsp").forward(req, resp);
