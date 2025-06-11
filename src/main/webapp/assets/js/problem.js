@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener("submit", function (event) {
             const hiddenInput = form.querySelector("input[name='code']");
             if (hiddenInput) {
-                hiddenInput.value = codeMirrorEditor.getValue(); // Use codeMirrorEditor
-                console.log("Form submitted with code:", hiddenInput.value); // Debug
+                hiddenInput.value = codeMirrorEditor.getValue();
+                console.log("Form submitted with code:", hiddenInput.value);
             } else {
                 console.error("Hidden input not found!");
             }
@@ -58,9 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Update line numbers on content change
+    let isEditorChanged = false;
     codeMirrorEditor.on('change', () => {
+        isEditorChanged = true;
         updateLineNumbers();
-        console.log("Editor content changed:", codeMirrorEditor.getValue()); // Debug
+        console.log("Editor content changed:", codeMirrorEditor.getValue());
     });
 
     // Initial line numbers update
@@ -116,4 +118,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Sahifadan chiqishdan oldin ogohlantirish
+    window.addEventListener('beforeunload', (event) => {
+        if (isEditorChanged) {
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
+
+    // Formani yuborishda o'zgartirish holatini yangilash
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function (event) {
+            const hiddenInput = form.querySelector("input[name='code']");
+            if (hiddenInput) {
+                hiddenInput.value = codeMirrorEditor.getValue();
+                isEditorChanged = false;
+                console.log("Form submitted with code:", hiddenInput.value);
+            } else {
+                console.error("Hidden input not found!");
+            }
+        });
+    });
 });
