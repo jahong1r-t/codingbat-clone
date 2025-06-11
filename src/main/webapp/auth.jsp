@@ -9,13 +9,12 @@
     <link rel="stylesheet" href="assets/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="auth-page">
 <div class="app-container">
     <div class="theme-toggle">
         <i class="fas fa-moon"></i>
     </div>
     <div class="auth-container">
-
         <div class="auth-logo">
             <img id="logo-img" src="assets/img/logo-black.png" width="200px" alt="404">
         </div>
@@ -64,6 +63,5 @@
 <script src="assets/js/theme.js"></script>
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/toast.js"></script>
-
 </body>
 </html>

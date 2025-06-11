@@ -1,12 +1,14 @@
 .auth-container {
-    margin: 2rem auto;
+    margin-left: 30%;
     padding: var(--space-4);
     background-color: var(--surface);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     animation: fadeIn 0.5s ease;
     width: 40%;
+    position: relative;
 }
+
 
 .auth-logo {
     display: flex;
@@ -120,6 +122,38 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Theme Toggle for Auth Page */
+.theme-toggle {
+    position: fixed;
+    top: var(--space-2);
+    right: var(--space-2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--surface);
+    box-shadow: var(--shadow-md);
+    z-index: 999;
+    transition: all var(--transition-fast);
+}
+
+.theme-toggle:hover {
+    background-color: var(--primary-light);
+    color: white;
+}
+
+.theme-toggle i {
+    font-size: var(--font-lg);
+    color: var(--text-primary);
+}
+
+.dark-theme .theme-toggle i {
+    color: var(--warning-color);
 }
 
 @media (max-width: 768px) {
