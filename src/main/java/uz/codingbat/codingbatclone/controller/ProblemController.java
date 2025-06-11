@@ -18,14 +18,18 @@ public class ProblemController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        EntityManager entityManager = jpaConnection.entityManager();
-        Problem problem = entityManager
-                .createQuery("SELECT p FROM Problem p LEFT JOIN FETCH p.testCases WHERE p.id = :id", Problem.class)
-                .setParameter("id", UUID.fromString(req.getParameter("id")))
-                .getSingleResult();
+        try (EntityManager entityManager = jpaConnection.entityManager()) {
+            Problem problem = entityManager
+                    .createQuery("SELECT p FROM Problem p LEFT JOIN FETCH p.testCases WHERE p.id = :id", Problem.class)
+                    .setParameter("id", UUID.fromString(req.getParameter("id")))
+                    .getSingleResult();
 
-        req.setAttribute("problem", problem);
-        req.getRequestDispatcher("/problem.jsp").forward(req, resp);
-        entityManager.close();
+            req.setAttribute("problem", problem);
+
+            req.setAttribute("f_code", req.getSession().getAttribute("f_code"));
+            req.getRequestDispatcher("problem.jsp").forward(req, resp);
+
+            req.getSession().removeAttribute("f_code");
+        }
     }
 }

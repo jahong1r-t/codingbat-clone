@@ -29,24 +29,24 @@ public class AuthService {
             return;
         }
 
-        EntityManager entityManager = jdbc.entityManager();
-        User user = entityManager
-                .createQuery("SELECT u FROM User u WHERE u.email = :email and u.password = :password", User.class)
-                .setParameter("email", email)
-                .setParameter("password", password)
-                .getSingleResultOrNull();
+        try (EntityManager entityManager = jdbc.entityManager()) {
+            User user = entityManager
+                    .createQuery("SELECT u FROM User u WHERE u.email = :email and u.password = :password", User.class)
+                    .setParameter("email", email)
+                    .setParameter("password", password)
+                    .getSingleResultOrNull();
 
-        if (user == null) {
-            req.setAttribute("error", "Invalid email or password");
-            req.getRequestDispatcher("auth.jsp").forward(req, resp);
+            if (user == null) {
+                req.setAttribute("error", "Invalid email or password");
+                req.getRequestDispatcher("auth.jsp").forward(req, resp);
 
-            return;
+                return;
+            }
+
+            req.getSession().setAttribute("user_id", user.getId());
+            req.getSession().setAttribute("role", user.getRole());
+            req.getSession().setAttribute("is_authenticated", true);
         }
-
-        req.getSession().setAttribute("user_id", user.getId());
-        req.getSession().setAttribute("role", user.getRole());
-        req.getSession().setAttribute("is_authenticated", true);
-        entityManager.close();
 
         resp.sendRedirect("/");
     }
@@ -69,33 +69,34 @@ public class AuthService {
             return;
         }
 
-        EntityManager entityManager = jdbc.entityManager();
 
-        if (entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
-                .setParameter("email", email)
-                .getSingleResultOrNull() != null
-        ) {
-            req.setAttribute("error", "Email already in use");
-            req.getRequestDispatcher("auth.jsp").forward(req, resp);
-            return;
+        try (EntityManager entityManager = jdbc.entityManager()) {
+            if (entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResultOrNull() != null
+            ) {
+                req.setAttribute("error", "Email already in use");
+                req.getRequestDispatcher("auth.jsp").forward(req, resp);
+                return;
+            }
+
+            entityManager.getTransaction().begin();
+
+            User user = User.builder()
+                    .fullName(fullName)
+                    .email(email)
+                    .password(password)
+                    .role(Role.USER)
+                    .build();
+
+            entityManager.persist(user);
+            entityManager.getTransaction().commit();
+            entityManager.close();
+
+            req.getSession().setAttribute("user_id", user.getId());
+            req.getSession().setAttribute("role", user.getRole());
+            req.getSession().setAttribute("is_authenticated", true);
         }
-
-        entityManager.getTransaction().begin();
-
-        User user = User.builder()
-                .fullName(fullName)
-                .email(email)
-                .password(password)
-                .role(Role.USER)
-                .build();
-
-        entityManager.persist(user);
-        entityManager.getTransaction().commit();
-        entityManager.close();
-
-        req.getSession().setAttribute("user_id", user.getId());
-        req.getSession().setAttribute("role", user.getRole());
-        req.getSession().setAttribute("is_authenticated", true);
 
         resp.sendRedirect("/");
 

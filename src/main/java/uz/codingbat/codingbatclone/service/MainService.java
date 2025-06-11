@@ -19,80 +19,81 @@ public class MainService {
                 && req.getSession().getAttribute("is_authenticated").equals("true")) {
             System.err.println("Hello world!");
         } else {
-            EntityManager entityManager = jpaConnection.entityManager();
-            String pageParam = req.getParameter("page");
-            String filter = req.getParameter("filter");
-            String sizeParam = req.getParameter("size");
+            try (EntityManager entityManager = jpaConnection.entityManager()) {
+                String pageParam = req.getParameter("page");
+                String filter = req.getParameter("filter");
+                String sizeParam = req.getParameter("size");
 
-            int page = 0;
-            if (pageParam != null) {
-                page = Integer.parseInt(pageParam) - 1;
-                if (page < 0) page = 0;
+                int page = 0;
+                if (pageParam != null) {
+                    page = Integer.parseInt(pageParam) - 1;
+                    if (page < 0) page = 0;
+                }
+
+                int size = 16;
+                if (sizeParam != null) {
+                    size = Integer.parseInt(sizeParam);
+                    if (size <= 0) size = 16;
+                }
+
+
+                if (filter == null || filter.isEmpty()) {
+                    List<Problem> problems = entityManager
+                            .createQuery("select p from Problem p", Problem.class)
+                            .setFirstResult(page * size)
+                            .setMaxResults(size)
+                            .getResultList();
+
+                    Long totalProblems = entityManager
+                            .createQuery("select count(p.id) from Problem p", Long.class)
+                            .getSingleResult();
+
+
+                    int totalPages = (int) Math.ceil((double) totalProblems / size);
+
+                    int currentPage = page + 1;
+                    int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
+                    int previous = (currentPage > 1) ? currentPage - 1 : 1;
+
+                    req.setAttribute("next", next);
+                    req.setAttribute("previous", previous);
+                    req.setAttribute("size", size);
+                    req.setAttribute("problems", problems);
+                    req.setAttribute("totalPages", totalPages);
+                    req.setAttribute("currentPage", currentPage);
+                    req.setAttribute("filter", null);
+                } else {
+                    List<Problem> problems = entityManager
+                            .createQuery("select p from Problem p where difficulty = :d", Problem.class)
+                            .setFirstResult(page * size)
+                            .setParameter("d", Difficulty.valueOf(filter.toUpperCase()))
+                            .setMaxResults(size)
+                            .getResultList();
+
+                    Long totalProblems = entityManager.createQuery("select count(p.id) from Problem p where difficulty = :d", Long.class)
+                            .setParameter("d", Difficulty.valueOf(filter.toUpperCase()))
+                            .getSingleResult();
+
+
+                    int totalPages = (int) Math.ceil((double) totalProblems / size);
+
+                    int currentPage = page + 1;
+                    int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
+                    int previous = (currentPage > 1) ? currentPage - 1 : 1;
+
+                    req.setAttribute("next", next);
+                    req.setAttribute("previous", previous);
+                    req.setAttribute("size", size);
+                    req.setAttribute("problems", problems);
+                    req.setAttribute("totalPages", totalPages);
+                    req.setAttribute("currentPage", currentPage);
+                    req.setAttribute("filter", filter);
+                }
+
+
             }
-
-            int size = 16;
-            if (sizeParam != null) {
-                size = Integer.parseInt(sizeParam);
-                if (size <= 0) size = 16;
-            }
-
-
-            if (filter == null || filter.isEmpty()) {
-                List<Problem> problems = entityManager
-                        .createQuery("select p from Problem p", Problem.class)
-                        .setFirstResult(page * size)
-                        .setMaxResults(size)
-                        .getResultList();
-
-                Long totalProblems = entityManager
-                        .createQuery("select count(p.id) from Problem p", Long.class)
-                        .getSingleResult();
-
-
-                int totalPages = (int) Math.ceil((double) totalProblems / size);
-
-                int currentPage = page + 1;
-                int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
-                int previous = (currentPage > 1) ? currentPage - 1 : 1;
-
-                req.setAttribute("next", next);
-                req.setAttribute("previous", previous);
-                req.setAttribute("size", size);
-                req.setAttribute("problems", problems);
-                req.setAttribute("totalPages", totalPages);
-                req.setAttribute("currentPage", currentPage);
-                req.setAttribute("filter", null);
-            } else {
-                List<Problem> problems = entityManager
-                        .createQuery("select p from Problem p where difficulty = :d", Problem.class)
-                        .setFirstResult(page * size)
-                        .setParameter("d", Difficulty.valueOf(filter.toUpperCase()))
-                        .setMaxResults(size)
-                        .getResultList();
-
-                Long totalProblems = entityManager.createQuery("select count(p.id) from Problem p where difficulty = :d", Long.class)
-                        .setParameter("d", Difficulty.valueOf(filter.toUpperCase()))
-                        .getSingleResult();
-
-
-                int totalPages = (int) Math.ceil((double) totalProblems / size);
-
-                int currentPage = page + 1;
-                int next = (currentPage + 1 <= totalPages) ? currentPage + 1 : currentPage;
-                int previous = (currentPage > 1) ? currentPage - 1 : 1;
-
-                req.setAttribute("next", next);
-                req.setAttribute("previous", previous);
-                req.setAttribute("size", size);
-                req.setAttribute("problems", problems);
-                req.setAttribute("totalPages", totalPages);
-                req.setAttribute("currentPage", currentPage);
-                req.setAttribute("filter", filter);
-            }
-
 
             req.getRequestDispatcher("index.jsp").forward(req, resp);
-            entityManager.close();
         }
     }
 

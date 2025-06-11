@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 import uz.codingbat.codingbatclone.entity.enums.Difficulty;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -32,8 +29,8 @@ public class Problem {
     private String codeTemplate;
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
-    private Set<TestCase> testCases = new HashSet<>();
+    private List<TestCase> testCases = new ArrayList<>();
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
-    private Set<Solution> solutions = new HashSet<>();
+    private List<Solution> solutions = new ArrayList<>();
 }

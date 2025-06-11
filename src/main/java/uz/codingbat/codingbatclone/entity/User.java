@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.codingbat.codingbatclone.entity.enums.Role;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -29,6 +27,6 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Solution> solutions = new HashSet<>();
+    private List<Solution> solutions = new ArrayList<>();
 }
 

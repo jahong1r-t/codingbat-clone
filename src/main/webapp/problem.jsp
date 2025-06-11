@@ -55,7 +55,8 @@
                             <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <form action="${pageContext.request.contextPath}/auth/logout" method="post" class="dropdown-item-form">
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post"
+                                  class="dropdown-item-form">
                                 <button type="submit" class="dropdown-item logout-btn">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </button>
@@ -82,12 +83,19 @@
             <div class="problem-description-panel">
                 <div class="problem-header">
                     <h2 id="problem-title"><c:out value="${problem.title}"/></h2>
-                    <span id="problem-difficulty" class="difficulty-badge difficulty-${problem.difficulty.name().toLowerCase()}">
-                        <c:out value="${problem.difficulty}"/>
+
+                    <span id="problem-difficulty" class="difficulty-badge
+                                    ${problem.difficulty == 'EASY' ? 'difficulty-easy' :
+                                      problem.difficulty == 'MEDIUM' ? 'difficulty-medium' :
+                                      'difficulty-hard'}">
+                        ${problem.difficulty == 'EASY' ? 'Easy' :
+                                problem.difficulty == 'MEDIUM' ? 'Medium' :
+                                        'Hard'}
                     </span>
+
                 </div>
                 <div class="problem-description" id="problem-description">
-                    <p><c:out value="${problem.description}" escapeXml="false"/></p>
+                    <p><c:out value="${problem.description}"/></p>
                 </div>
 
                 <!-- Example Test Cases -->
@@ -127,18 +135,32 @@
                     <div class="editor-toolbar">
                         <span class="file-name">Solution.java</span>
                         <div class="button-group">
-                            <button id="format-btn" class="btn btn-primary">
-                                <i class="fas fa-magic"></i> Format
-                            </button>
-                            <button id="submit-btn" class="btn btn-primary">
-                                <i class="fas fa-play"></i> Run Tests
-                            </button>
+                            <form action="${pageContext.request.contextPath}/format" method="POST">
+                                <input type="hidden" id="hidden-code-format" name="code">
+                                <input type="hidden" value="${problem.id}" name="id">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-magic"></i> Format
+                                </button>
+                            </form>
+
+                            <form action="${pageContext.request.contextPath}/run" method="POST">
+                                <input type="hidden" id="hidden-code-run" name="code">
+                                <input type="hidden" value="${problem.id}" name="id">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-play"></i> Run
+                                </button>
+                            </form>
+
                         </div>
                     </div>
+
                     <div class="code-editor-wrapper">
                         <div class="line-numbers" id="line-numbers">1<br>2<br>3<br>4</div>
+                        <input type="hidden" id="problem-id" value="${problem.id}"/>
                         <label for="code-editor"></label>
-                        <textarea id="code-editor" class="code-editor"><c:out value="${problem.codeTemplate}"/></textarea>
+                        <textarea id="code-editor" name="code"
+                                  class="code-editor"><c:out
+                                value="${f_code != null ? f_code : problem.codeTemplate}"/></textarea>
                     </div>
                 </div>
 
@@ -197,6 +219,33 @@
         </div>
     </div>
 </template>
+
+<%--<script>--%>
+<%--    const editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {--%>
+<%--        mode: "text/x-java",--%>
+<%--        theme: "dracula",--%>
+<%--        lineNumbers: true,--%>
+<%--        autoCloseBrackets: true--%>
+<%--    });--%>
+
+<%--    // Form submit hodisasida CodeMirror'dan qiymat olish--%>
+<%--    document.querySelectorAll("form").forEach(form => {--%>
+<%--        form.addEventListener("submit", function (event) {--%>
+<%--            const hiddenInput = form.querySelector("input[name='code']");--%>
+<%--            if (hiddenInput) {--%>
+<%--                hiddenInput.value = editor.getValue(); // CodeMirror'dan yangi qiymatni olish--%>
+<%--            } else {--%>
+<%--                console.error("Hidden input topilmadi!");--%>
+<%--            }--%>
+<%--        });--%>
+<%--    });--%>
+
+<%--    // Kod muharriri o'zgarganda log qilish (debug uchun)--%>
+<%--    editor.on("change", function () {--%>
+<%--        console.log("Kod muharriri yangilandi:", editor.getValue());--%>
+<%--    });--%>
+<%--</script>--%>
+
 
 <script src="assets/js/problem.js"></script>
 <script src="assets/js/theme.js"></script>
