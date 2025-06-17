@@ -12,7 +12,6 @@ import uz.codingbat.codingbatclone.entity.UserActivity;
 import uz.codingbat.codingbatclone.payload.UserDTO;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
