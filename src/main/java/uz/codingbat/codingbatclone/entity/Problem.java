@@ -1,15 +1,14 @@
 package uz.codingbat.codingbatclone.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import uz.codingbat.codingbatclone.entity.enums.Difficulty;
 
 import java.util.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Problem {

@@ -143,7 +143,7 @@
                                 </button>
                             </form>
 
-                            <form action="${pageContext.request.contextPath}/run" method="POST">
+                            <form action="${pageContext.request.contextPath}/problem/run" method="POST">
                                 <input type="hidden" id="hidden-code-run" name="code">
                                 <input type="hidden" value="${problem.id}" name="id">
                                 <button class="btn btn-primary">
@@ -207,7 +207,7 @@
             <span class="test-result-status"></span>
         </div>
         <div class="test-result-content">
-            <div class="test-input"><strong>Input:</strong  >
+            <div class="test-input"><strong>Input:</strong>
                 <pre class="code-block"></pre>
             </div>
             <div class="test-expected"><strong>Expected Output:</strong>
