@@ -1,6 +1,7 @@
 package uz.codingbat.codingbatclone.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
+import uz.codingbat.codingbatclone.entity.User;
 
 public interface Util {
 
@@ -19,5 +20,9 @@ public interface Util {
     static boolean isSessionValid(HttpServletRequest req) {
         Object id = req.getSession().getAttribute("is_authenticated");
         return id != null && id.toString() != null && !id.toString().isEmpty();
+    }
+
+    static User getUser(HttpServletRequest req) {
+        return (User) req.getSession().getAttribute("user");
     }
 }

@@ -2,6 +2,9 @@ package uz.codingbat.codingbatclone.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -17,7 +20,9 @@ public class TestCase {
     private String input;
 
     @Column(columnDefinition = "TEXT")
-    private String expectedOutput;
+    private String output;
+
+    private Boolean isHidden;
 
     @ManyToOne
     @JoinColumn(name = "problem_id")

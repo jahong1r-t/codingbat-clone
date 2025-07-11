@@ -13,18 +13,17 @@
 <body>
 <div class="app-container">
     <nav class="navbar">
+        <!-- Navbar qismi o'zgarishsiz qoladi -->
         <div class="navbar-brand">
             <a href="${pageContext.request.contextPath}/">
                 <img id="logo-img" src="${pageContext.request.contextPath}/assets/img/logo-black.png" width="150px"
                      alt="logo">
             </a>
         </div>
-
         <div class="navbar-menu">
             <div class="theme-toggle">
                 <i class="fas fa-moon"></i>
             </div>
-
             <c:choose>
                 <c:when test="${sessionScope.is_authenticated == true}">
                     <div class="profile-dropdown">
@@ -37,7 +36,6 @@
                             <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-
                             <form action="${pageContext.request.contextPath}/auth/logout" method="post"
                                   class="dropdown-item-form">
                                 <button type="submit" class="dropdown-item logout-btn">
@@ -62,9 +60,11 @@
     <main class="admin-container">
         <header class="admin-header">
             <h2>Admin Panel</h2>
-            <button id="add-problem-btn" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Add New Problem
-            </button>
+            <a href="${pageContext.request.contextPath}/add">
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add New Problem
+                </button>
+            </a>
         </header>
 
         <div class="statistics-grid">
@@ -72,21 +72,21 @@
                 <i class="fas fa-users"></i>
                 <div class="stat-content">
                     <h3>Total Users</h3>
-                    <p id="total-users">0</p>
+                    <p id="total-users"><c:out value="${stats.totalUsers}"/></p>
                 </div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-code"></i>
                 <div class="stat-content">
                     <h3>Total Problems</h3>
-                    <p id="total-problems">0</p>
+                    <p id="total-problems"><c:out value="${stats.totalProblems}"/></p>
                 </div>
             </div>
             <div class="stat-card">
                 <i class="fas fa-clock"></i>
                 <div class="stat-content">
                     <h3>Latest Problem</h3>
-                    <p id="latest-problem">None</p>
+                    <p id="latest-problem"><c:out value="${stats.latestProblem}"/></p>
                     <small id="latest-problem-date"></small>
                 </div>
             </div>
@@ -94,199 +94,90 @@
                 <i class="fas fa-star"></i>
                 <div class="stat-content">
                     <h3>Most Solved</h3>
-                    <p id="most-solved">None</p>
+                    <p id="most-solved"><c:out value="${stats.mostSolved}"/></p>
                     <small id="most-solved-count"></small>
                 </div>
             </div>
         </div>
 
-        <div class="admin-content">
-            <div class="problem-management">
-                <h3>Manage Problems</h3>
-                <div class="admin-problem-list" id="admin-problem-list">
-                    <div class="admin-problem-item"
-                         data-problem-id="1"
-                         data-title="FizBuzz"
-                         data-difficulty="hard"
-                         data-description="Write a program that prints the numbers from 1 to n. But for multiples of three print 'Fizz' instead of the number and for the multiples of five print 'Buzz'."
-                         data-template="public String fizBuzz(int n) { return ''; }"
-                         data-test-cases='[{"input":"3","output":"Fizz","hidden":false},{"input":"5","output":"Buzz","hidden":true},{"input":"15","output":"FizzBuzz","hidden":false}]'>
-                        <div class="admin-problem-info">
-                            <h4 class="admin-problem-title">FizBuzz</h4>
-                            <div class="admin-problem-meta">
-                                <span class="admin-problem-difficulty difficulty-hard">Hard</span>
-                                <span class="admin-problem-test-count">3</span>
-                            </div>
-                        </div>
-                        <div class="admin-problem-actions">
-                            <button class="btn btn-secondary edit-problem-btn">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-danger delete-problem-btn">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
+        <div class="problem-list" id="problem-list">
+            <c:forEach items="${problems}" var="p">
+                <div class="problem-card"
+                     data-problem-id="${p.id}"
+                     data-title="${p.title}"
+                     data-difficulty="${p.difficulty}"
+                     data-description="${p.description}"
+                     data-template="${p.codeTemplate}"
+                     data-test-cases='${p.testCases}'>
+                    <div class="problem-info">
+                        <h3 class="problem-title">${p.title}</h3>
+                        <div class="problem-meta">
+                            <span class="problem-difficulty
+                                ${p.difficulty == 'EASY' ? 'difficulty-easy' :
+                                  p.difficulty == 'MEDIUM' ? 'difficulty-medium' :
+                                  'difficulty-hard'}">
+                                    ${p.difficulty == 'EASY' ? 'Easy' :
+                                            p.difficulty == 'MEDIUM' ? 'Medium' :
+                                                    'Hard'}
+                            </span>
+                            <span class="problem-completion">${p.testCases.size()} test cases</span>
                         </div>
                     </div>
+                    <div class="problem-actions">
+
+                        <a style="text-decoration: none" href="${pageContext.request.contextPath}/delete?id=${p.id}">
+                            <button class="btn btn-outline delete-problem-btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </a>
+
+                        <a style="text-decoration: none" href="${pageContext.request.contextPath}/problem?id=${p.id}">
+                            <button class="btn btn-outline delete-problem-btn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </a>
+                    </div>
                 </div>
-            </div>
+
+            </c:forEach>
         </div>
+
     </main>
 
-    <!-- Modal for adding problems -->
-    <div class="modal" id="problem-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-title">Add New Problem</h3>
-                <button class="close-btn">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="problem-form">
-                    <input type="hidden" id="problem-id">
-                    <div class="form-group">
-                        <label for="problem-title-input">Title</label>
-                        <input type="text" id="problem-title-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="problem-difficulty-select">Difficulty</label>
-                        <select id="problem-difficulty-select" required>
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="problem-description-input">Description</label>
-                        <textarea id="problem-description-input" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="problem-template-input">Code Template</label>
-                        <textarea id="problem-template-input" rows="5" required></textarea>
-                    </div>
-
-                    <div class="test-cases-section">
-                        <div class="test-cases-header">
-                            <h4>Test Cases</h4>
-                            <button type="button" id="add-test-case-btn" class="btn btn-secondary">
-                                <i class="fas fa-plus"></i> Add Test Case
-                            </button>
-                        </div>
-                        <div id="test-cases-container">
-                            <!-- Test cases will be added here -->
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline" id="cancel-btn">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Problem</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="pagination">
+        <!-- Pagination o'zgarishsiz qoladi -->
+        <c:choose>
+            <c:when test="${previous > 0}">
+                <a href="?filter=${filter}&page=${previous}" class="pagination-btn">
+                    <i class="fas fa-chevron-left"></i> Prev
+                </a>
+            </c:when>
+            <c:otherwise>
+                    <span class="pagination-btn disabled">
+                        <i class="fas fa-chevron-left"></i> Prev
+                    </span>
+            </c:otherwise>
+        </c:choose>
+        <c:set var="totalPages" value="${totalPages}"/>
+        <c:set var="currentPage" value="${currentPage}"/>
+        <c:forEach begin="1" end="${totalPages}" var="i">
+            <a href="?filter=${filter}&page=${i}" class="pagination-btn ${i == currentPage ? 'active' : ''}">
+                    ${i}
+            </a>
+        </c:forEach>
+        <c:choose>
+            <c:when test="${next <= totalPages}">
+                <a href="?filter=${filter}&page=${next}" class="pagination-btn">
+                    Next <i class="fas fa-chevron-right"></i>
+                </a>
+            </c:when>
+            <c:otherwise>
+                    <span class="pagination-btn disabled">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </span>
+            </c:otherwise>
+        </c:choose>
     </div>
-
-    <!-- Modal for editing problems -->
-    <div class="modal" id="edit-problem-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Edit Problem</h3>
-                <button class="close-btn">×</button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-problem-form">
-                    <input type="hidden" id="edit-problem-id">
-                    <div class="form-group">
-                        <label for="edit-problem-title-input">Title</label>
-                        <input type="text" id="edit-problem-title-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-problem-difficulty-select">Difficulty</label>
-                        <select id="edit-problem-difficulty-select" required>
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-problem-description-input">Description</label>
-                        <textarea id="edit-problem-description-input" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-problem-template-input">Code Template</label>
-                        <textarea id="edit-problem-template-input" rows="5" required></textarea>
-                    </div>
-
-                    <div class="test-cases-section">
-                        <div class="test-cases-header">
-                            <h4>Test Cases</h4>
-                            <button type="button" id="edit-add-test-case-btn" class="btn btn-secondary">
-                                <i class="fas fa-plus"></i> Add Test Case
-                            </button>
-                        </div>
-                        <div id="edit-test-cases-container">
-                            <!-- Test cases will be added here -->
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline" id="edit-cancel-btn">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Problem</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Test case template -->
-    <template id="test-case-editor-template">
-        <div class="test-case-editor">
-            <div class="test-case-header">
-                <h5>Test Case</h5>
-                <button type="button" class="btn btn-danger remove-test-case-btn">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-            <div class="test-case-inputs">
-                <div class="form-group">
-                    <label>Input</label>
-                    <label>
-                        <textarea class="test-input" rows="2" required></textarea>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label>Expected Output</label>
-                    <label>
-                        <textarea class="test-output" rows="2" required></textarea>
-                    </label>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" class="test-hidden"> Hidden Test Case (not shown to users)
-                    </label>
-                </div>
-            </div>
-        </div>
-    </template>
-
-    <!-- Admin problem item template -->
-    <template id="admin-problem-item-template">
-        <div class="admin-problem-item">
-            <div class="admin-problem-info">
-                <h4 class="admin-problem-title"></h4>
-                <div class="admin-problem-meta">
-                    <span class="admin-problem-difficulty"></span>
-                    <span class="admin-problem-test-count"></span>
-                </div>
-            </div>
-            <div class="admin-problem-actions">
-                <button class="btn btn-secondary edit-problem-btn">
-                    <i class="fas fa-edit"></i> Edit
-                </button>
-                <button class="btn btn-danger delete-problem-btn">
-                    <i class="fas fa-trash"></i> Delete
-                </button>
-            </div>
-        </div>
-    </template>
 </div>
 
 <script src="assets/js/admin.js"></script>

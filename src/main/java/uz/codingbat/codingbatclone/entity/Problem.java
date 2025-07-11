@@ -2,8 +2,10 @@ package uz.codingbat.codingbatclone.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import uz.codingbat.codingbatclone.entity.enums.Difficulty;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -11,7 +13,7 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Problem {
+public class Problem extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -26,10 +28,4 @@ public class Problem {
 
     @Column(columnDefinition = "TEXT")
     private String codeTemplate;
-
-    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
-    private List<TestCase> testCases = new ArrayList<>();
-
-    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
-    private List<Solution> solutions = new ArrayList<>();
 }

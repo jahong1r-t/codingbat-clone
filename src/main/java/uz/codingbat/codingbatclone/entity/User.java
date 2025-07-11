@@ -2,8 +2,10 @@ package uz.codingbat.codingbatclone.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import uz.codingbat.codingbatclone.entity.enums.Role;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -13,21 +15,15 @@ import java.util.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     private String fullName;
     private String email;
     private String password;
-    private int solvedProblemsCount;
-    private int currentStreak;
-    private int bestStreak;
+
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Solution> solutions = new ArrayList<>();
 }
 

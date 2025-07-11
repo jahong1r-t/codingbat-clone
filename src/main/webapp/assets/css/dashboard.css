@@ -173,14 +173,16 @@
     align-items: center;
 }
 
+
 .pagination {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: var(--space-1);
-    margin-top: -100px;
-    margin-bottom: var(--space-3); /* Pastki margin */
-    transform: translateY(-10px); /* Biroz yuqoriga ko'tarish */
+    z-index: 1000;
+    padding-bottom: 30px;
 }
 
 .pagination-btn {

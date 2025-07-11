@@ -1,0 +1,194 @@
+/* Problem Form Container - Simplified */
+.problem-form-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main Form Structure */
+.problem-form {
+    background-color: transparent;
+    padding: 0;
+    max-width: none;
+}
+
+.form-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-4);
+    width: 100%;
+    padding: var(--space-3);
+}
+
+/* Columns */
+.left-column,
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background-color: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    box-shadow: var(--shadow-sm);
+}
+
+.right-column {
+    background-color: var(--surface);
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 0;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: var(--space-3);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-weight: var(--font-medium);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--space-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    transition: all var(--transition-fast);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+#problem-template {
+    height: 145px;
+}
+
+#problem-description {
+    height: 70px;
+}
+
+/* Test Cases Section */
+.test-cases-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.test-cases-section .section-header {
+    margin-bottom: var(--space-3);
+}
+
+#test-cases-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 70vh;
+    padding-right: var(--space-2);
+}
+
+/* Test Case Items */
+.test-case-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    margin-bottom: var(--space-3);
+}
+
+.test-case-header {
+    padding: var(--space-2);
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.test-case-content {
+    padding: var(--space-3);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    margin-top: var(--space-3);
+}
+
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .form-layout {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+
+    .left-column,
+    .right-column {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-layout {
+        padding: var(--space-2);
+    }
+
+    .form-group {
+        margin-bottom: var(--space-2);
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    #test-cases-container {
+        max-height: 50vh;
+    }
+}
+
+/* Utilities */
+.full-width {
+    width: 100%;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.User;
 import uz.codingbat.codingbatclone.entity.UserActivity;
+import uz.codingbat.codingbatclone.entity.UserStats;
+import uz.codingbat.codingbatclone.payload.ProfileDTO;
 import uz.codingbat.codingbatclone.payload.UserDTO;
 
 import java.io.IOException;
@@ -30,6 +32,10 @@ public class ProfileController extends HttpServlet {
                 UUID userId = (UUID) req.getSession().getAttribute("user_id");
                 User user = entityManager.find(User.class, userId);
 
+                UserStats stats = entityManager.createQuery("select s from UserStats s where s.user.id= :id", UserStats.class)
+                        .setParameter("id", userId)
+                        .getSingleResultOrNull();
+
                 List<UserActivity> resultList = entityManager.createQuery(
                                 "select u from UserActivity u where u.user.id = :id", UserActivity.class)
                         .setParameter("id", userId)
@@ -41,15 +47,14 @@ public class ProfileController extends HttpServlet {
                                 UserActivity::getProblemsSolved
                         ));
 
-                UserDTO dto = UserDTO.builder()
-                        .id(user.getId())
+                ProfileDTO dto = ProfileDTO.builder()
                         .fullName(user.getFullName())
                         .email(user.getEmail())
                         .password(user.getPassword())
                         .role(user.getRole())
-                        .solvedProblemsCount(user.getSolvedProblemsCount())
-                        .currentStreak(user.getCurrentStreak())
-                        .bestStreak(user.getBestStreak())
+                        .solvedProblemsCount(stats.getSolvedProblemsCount())
+                        .currentStreak(stats.getCurrentStreak())
+                        .bestStreak(stats.getBestStreak())
                         .activity(activityMap)
                         .build();
 

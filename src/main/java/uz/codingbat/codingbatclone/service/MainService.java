@@ -57,7 +57,7 @@ public class MainService {
 
                     req.setAttribute("next", next);
                     req.setAttribute("previous", previous);
-                    req.setAttribute("size", size);
+                    req.setAttribute(   "size", size);
                     req.setAttribute("problems", problems);
                     req.setAttribute("totalPages", totalPages);
                     req.setAttribute("currentPage", currentPage);

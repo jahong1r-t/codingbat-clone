@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.User;
+import uz.codingbat.codingbatclone.entity.UserStats;
 import uz.codingbat.codingbatclone.entity.enums.Role;
 
 import java.io.IOException;
@@ -96,8 +97,17 @@ public class AuthService {
                     .build();
 
             entityManager.persist(user);
+
+            UserStats build = UserStats.builder()
+                    .currentStreak(0)
+                    .bestStreak(0)
+                    .solvedProblemsCount(0)
+                    .user(user)
+                    .build();
+
+            entityManager.persist(build);
             entityManager.getTransaction().commit();
-            entityManager.close();
+
 
             req.getSession().setAttribute("user_id", user.getId());
             req.getSession().setAttribute("role", user.getRole());

@@ -77,8 +77,8 @@ public class CompileService {
                         className,
                         methodName,
                         test.getInput(),
-                        test.getExpectedOutput(),
-                        test.getExpectedOutput()
+                        test.getOutput(),
+                        test.getOutput()
                 );
 
                 Files.writeString(userDir.resolve(runnerClassName + ".java"), testCode);
