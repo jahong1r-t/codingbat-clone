@@ -37,7 +37,7 @@ public class ProfileController extends HttpServlet {
 
                 Map<String, Integer> activityMap = resultList.stream()
                         .collect(Collectors.toMap(
-                                activity -> activity.getDate().toString(),  // LocalDate ni Stringga aylantiramiz
+                                activity -> activity.getDate().toString(),
                                 UserActivity::getProblemsSolved
                         ));
 
@@ -46,6 +46,7 @@ public class ProfileController extends HttpServlet {
                         .fullName(user.getFullName())
                         .email(user.getEmail())
                         .password(user.getPassword())
+                        .role(user.getRole())
                         .solvedProblemsCount(user.getSolvedProblemsCount())
                         .currentStreak(user.getCurrentStreak())
                         .bestStreak(user.getBestStreak())

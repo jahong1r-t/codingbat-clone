@@ -39,6 +39,7 @@
                             <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
+
                             <form action="${pageContext.request.contextPath}/auth/logout" method="post"
                                   class="dropdown-item-form">
                                 <button type="submit" class="dropdown-item logout-btn">

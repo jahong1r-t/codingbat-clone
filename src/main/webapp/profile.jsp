@@ -25,11 +25,23 @@
                 <i class="fas fa-moon"></i>
             </div>
 
-            <a href="${pageContext.request.contextPath}/">
-                <button id="problems-link" class="btn btn-primary">
-                    <i class="fas fa-list"></i> Problems
-                </button>
-            </a>
+            <c:choose>
+                <c:when test="${user.role == 'ADMIN'}">
+                    <a href="${pageContext.request.contextPath}/admin">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-list"></i> Problems
+                        </button>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-list"></i> Problems
+                        </button>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+
 
             <c:choose>
                 <c:when test="${sessionScope.is_authenticated == true}">
@@ -130,57 +142,6 @@
                     <div class="activity-square level-4"></div>
                 </div>
                 <span>More</span>
-            </div>
-        </div>
-
-        <div class="recent-activity">
-            <h3>Recent Activity</h3>
-            <div class="activity-list">
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Solved "Two Sum" problem</p>
-                        <span class="activity-time">2 hours ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Completed Java Basics Test with 85% score</p>
-                        <span class="activity-time">1 day ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Solved "Binary Search" problem</p>
-                        <span class="activity-time">1 day ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Solved "Merge Sort" problem</p>
-                        <span class="activity-time">2 days ago</span>
-                    </div>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-user-edit"></i>
-                    </div>
-                    <div class="activity-content">
-                        <p class="activity-description">Updated profile information</p>
-                        <span class="activity-time">3 days ago</span>
-                    </div>
-                </div>
             </div>
         </div>
     </main>

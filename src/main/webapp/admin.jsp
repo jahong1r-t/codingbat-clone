@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <html>
 <head>
     <title>CodingBat - Admin Panel</title>
@@ -13,23 +15,47 @@
     <nav class="navbar">
         <div class="navbar-brand">
             <a href="${pageContext.request.contextPath}/">
-                <img id="logo-img" src="assets/img/logo-black.png" width="150px" alt="logo"/>
+                <img id="logo-img" src="${pageContext.request.contextPath}/assets/img/logo-black.png" width="150px"
+                     alt="logo">
             </a>
         </div>
+
         <div class="navbar-menu">
             <div class="theme-toggle">
                 <i class="fas fa-moon"></i>
             </div>
-            <a href="${pageContext.request.contextPath}/">
-                <button id="problems-link" class="btn btn-primary">
-                    <i class="fas fa-list"></i> Problems
-                </button>
-            </a>
-            <a href="${pageContext.request.contextPath}/logout">
-                <button id="login-btn" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Log out
-                </button>
-            </a>
+
+            <c:choose>
+                <c:when test="${sessionScope.is_authenticated == true}">
+                    <div class="profile-dropdown">
+                        <button class="btn btn-primary profile-btn" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i> Profile
+                            </a>
+
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post"
+                                  class="dropdown-item-form">
+                                <button type="submit" class="dropdown-item logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/auth?tab=signin">
+                        <button id="sign-in-btn" class="btn btn-primary">Sign In</button>
+                    </a>
+                    <a href="${pageContext.request.contextPath}/auth?tab=signup">
+                        <button id="sign-up-btn" class="btn btn-primary">Sign Up</button>
+                    </a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </nav>
 
