@@ -12,6 +12,7 @@ import uz.codingbat.codingbatclone.entity.TestCase;
 import uz.codingbat.codingbatclone.payload.ProblemDTO;
 import uz.codingbat.codingbatclone.payload.TestCaseDTO;
 import uz.codingbat.codingbatclone.service.CompileService;
+import uz.codingbat.codingbatclone.service.ProblemService;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @WebServlet("/problem/*")
 public class ProblemController extends HttpServlet {
     private final JpaConnection jpaConnection = JpaConnection.getInstance();
-    private final CompileService compileService = new CompileService();
+    private final ProblemService problemService=new ProblemService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,15 +63,10 @@ public class ProblemController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if ("/run".equals(req.getPathInfo())) {
-            String code = req.getParameter("code");
-            String id = req.getParameter("id");
-            System.err.println(code + " " + id);
+            problemService.run(req,resp);
 
-            compileService.compile(code, id).forEach((k, v) -> {
-                System.out.println("Compiling " + k + " with " + v);
-            });
-
-            resp.sendRedirect("/problem?id=" + id + "&result=" + true);
+        }else {
+//            resp.sendRedirect("/problem?id=" + id + "&run=" + true);
         }
     }
 }

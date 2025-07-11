@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.TestCase;
+import uz.codingbat.codingbatclone.payload.TestResultDTO;
+import uz.codingbat.codingbatclone.payload.TestResultSummaryDTO;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -17,6 +19,7 @@ import java.io.InputStreamReader;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -34,6 +37,7 @@ public class CompileService {
             return code;
         }
     }
+
 
     @SneakyThrows
     public Map<TestCase, String> compile(String code, String id) {
@@ -62,11 +66,11 @@ public class CompileService {
                 runnerClassNames.add(runnerClassName);
 
                 String testCode = String.format("""
-                                    public class %s {
+                                public class %s {
                                     public static void main(String[] args) {
                                         try {
-                                            Object result = %s.%s(%s);
-                                            System.out.println(result.equals(%s) ? "PASS" : "FAIL: expected %s but was " + result);
+                                            Object result = %s.%s("%s");
+                                            System.out.println(result.equals("%s") ? "PASS" : "FAIL: expected %s but was " + result);
                                         } catch (Exception e) {
                                             System.out.println("EXCEPTION: " + e.getMessage());
                                         }
@@ -76,9 +80,9 @@ public class CompileService {
                         runnerClassName,
                         className,
                         methodName,
-                        test.getInput(),
-                        test.getOutput(),
-                        test.getOutput()
+                        test.getInput().replace("\"", "\\\""),
+                        test.getOutput().replace("\"", "\\\""),
+                        test.getOutput().replace("\"", "\\\"")
                 );
 
                 Files.writeString(userDir.resolve(runnerClassName + ".java"), testCode);
@@ -165,5 +169,41 @@ public class CompileService {
                         .forEach(File::delete);
             }
         }
+    }
+
+    public TestResultSummaryDTO summarizeTestResults(Map<TestCase, String> results, String code) {
+        int passed = 0, failed = 0, error = 0;
+        List<TestResultDTO> details = new ArrayList<>();
+
+        for (Map.Entry<TestCase, String> entry : results.entrySet()) {
+            TestCase test = entry.getKey();
+            String output = entry.getValue();
+
+            String yourOutput = output;
+            if (output.startsWith("PASS")) {
+                passed++;
+                yourOutput = test.getOutput();
+            } else if (output.startsWith("FAIL")) {
+                failed++;
+                yourOutput = output.substring(output.lastIndexOf("was") + 4);
+            } else {
+                error++;
+                yourOutput = output;
+            }
+
+            details.add(TestResultDTO.builder()
+                    .input(test.getInput())
+                    .output(test.getOutput())
+                    .yourOutput(yourOutput)
+                    .build());
+        }
+
+        return TestResultSummaryDTO.builder()
+                .passed(passed)
+                .failed(failed)
+                .error(error)
+                .code(code)
+                .details(details)
+                .build();
     }
 }

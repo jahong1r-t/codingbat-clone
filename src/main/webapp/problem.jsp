@@ -1,4 +1,3 @@
-<%--@elvariable id="problem" type="com.example.Problem"--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -105,7 +104,7 @@
                         <c:forEach var="testCase" items="${problem.testCases}" varStatus="loop">
                             <div class="test-case">
                                 <div class="test-case-header">
-                                    <span class="test-case-title">Test Case #${loop.count}</span>
+                                    <span class="test-case-title">Test Case ${loop.count}</span>
                                 </div>
                                 <div class="test-case-content">
                                     <div class="test-input">
@@ -114,7 +113,7 @@
                                     </div>
                                     <div class="test-expected">
                                         <strong>Expected Output:</strong>
-                                        <pre class="code-block"><c:out value="${testCase.expectedOutput}"/></pre>
+                                        <pre class="code-block"><c:out value="${testCase.output}"/></pre>
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +132,7 @@
                 <!-- Code Editor -->
                 <div class="editor-container active" id="editor-container">
                     <div class="editor-toolbar">
-                        <span class="file-name">Solution.java</span>
+                        <span class="file-name">Java</span>
                         <div class="button-group">
                             <form action="${pageContext.request.contextPath}/format" method="POST">
                                 <input type="hidden" id="hidden-code-format" name="code">
@@ -169,14 +168,12 @@
                     <div class="results-header">
                         <h3>Test Results</h3>
                         <div class="results-summary" id="results-summary">
-                            <!-- Test natijalari dinamik ravishda JavaScript yoki boshqa servlet orqali yangilanadi -->
                             <span class="status-passed">Passed: 0</span>
                             <span class="status-failed">Failed: 0</span>
                             <span class="status-error">Error: 0</span>
                         </div>
                     </div>
                     <div class="test-results" id="test-results">
-                        <!-- Test natijalari JavaScript yoki backenddan keladi -->
                     </div>
                 </div>
             </div>
