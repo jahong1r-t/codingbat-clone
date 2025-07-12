@@ -8,7 +8,7 @@ import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.TestCase;
 import uz.codingbat.codingbatclone.payload.TestResultDTO;
-import uz.codingbat.codingbatclone.payload.TestResultSummaryDTO;
+import uz.codingbat.codingbatclone.payload.TestSummaryDTO;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -19,7 +19,6 @@ import java.io.InputStreamReader;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -171,7 +170,7 @@ public class CompileService {
         }
     }
 
-    public TestResultSummaryDTO summarizeTestResults(Map<TestCase, String> results, String code) {
+    public TestSummaryDTO summarizeTestResults(Map<TestCase, String> results, String code) {
         int passed = 0, failed = 0, error = 0;
         List<TestResultDTO> details = new ArrayList<>();
 
@@ -198,7 +197,7 @@ public class CompileService {
                     .build());
         }
 
-        return TestResultSummaryDTO.builder()
+        return TestSummaryDTO.builder()
                 .passed(passed)
                 .failed(failed)
                 .error(error)

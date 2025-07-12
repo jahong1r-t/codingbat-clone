@@ -64,6 +64,14 @@
     --border: var(--border-light);
     --text-primary: var(--text-primary-light);
     --text-secondary: var(--text-secondary-light);
+
+    --activity-level-0: #ebedf0;
+    --activity-level-1: #9be9a8;
+    --activity-level-2: #40c463;
+    --activity-level-3: #30a14e;
+    --activity-level-4: #216e39;
+
+    --tooltip-bg: rgba(0, 0, 0, 0.38);
 }
 
 /* Dark theme */

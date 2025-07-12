@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class TestResultSummaryDTO {
+public class TestSummaryDTO {
     private Integer passed;
     private Integer failed;
     private Integer error;

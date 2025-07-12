@@ -1,74 +1,60 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
     const activityGrid = document.getElementById('activity-grid');
-    const rawData = activityGrid?.getAttribute('data-activity');
-    const activityData = rawData ? JSON.parse(rawData) : {};
+    const raw = activityGrid?.getAttribute('data-activity') || '{}';
 
-    console.log("Activity Data:", activityData);
+    const activityData = {};
+    const cleaned = raw.replace(/[{}]/g, '');
+    const entries = cleaned.split(', ');
 
-    function generateActivityGrid() {
-        if (!activityGrid) {
-            console.error("Activity grid element not found!");
-            return;
+    for (let entry of entries) {
+        const [date, count] = entry.split('=');
+        if (date && count) {
+            activityData[date.trim()] = parseInt(count.trim());
         }
+    }
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-        const startDate = new Date(today);
-        startDate.setDate(today.getDate() - 364); // 1 yil
+    const lastSunday = new Date(today);
+    lastSunday.setDate(today.getDate() - today.getDay());
 
-        activityGrid.innerHTML = '';
+    const startDate = new Date(lastSunday);
+    startDate.setDate(startDate.getDate() - 52 * 7);
 
-        for (let i = 0; i < 365; i++) {
-            const currentDate = new Date(startDate);
-            currentDate.setDate(startDate.getDate() + i);
+    activityGrid.innerHTML = '';
 
-            const isoDate = currentDate.toISOString().split('T')[0];
-            const activityCount = activityData[isoDate] || 0;
-            const level = calculateActivityLevel(activityCount);
+    for (let row = 0; row < 7; row++) {
+        for (let col = 0; col < 53; col++) {
+            const offset = col * 7 + row;
+            const current = new Date(startDate);
+            current.setDate(startDate.getDate() + offset);
+            current.setHours(0, 0, 0, 0);
+
+            if (current > today) continue;
+
+            const iso = formatDate(current);
+            const count = activityData[iso] || 0;
+            const level = getLevel(count);
 
             const square = document.createElement('div');
             square.className = `activity-square level-${level}`;
-            square.title = `${isoDate}: ${activityCount} problems solved`;
-            square.setAttribute('data-date', isoDate);
-            square.setAttribute('data-count', activityCount);
+            square.title = `${iso}: ${count} solved`;
 
             activityGrid.appendChild(square);
         }
     }
 
-    function calculateActivityLevel(count) {
+    function formatDate(date) {
+        return date.toLocaleDateString('sv');
+    }
+
+    function getLevel(count) {
         if (count <= 0) return 0;
-        if (count >= 4) return 4;
-        if (count >= 3) return 3;
-        if (count >= 2) return 2;
+        if (count >= 10) return 4;
+        if (count >= 5) return 3;
+        if (count >= 3) return 2;
         return 1;
     }
 
-    // Modal
-    const editProfileBtn = document.getElementById('edit-profile-btn');
-    const editProfileModal = document.getElementById('edit-profile-modal');
-    const cancelEditBtn = document.getElementById('cancel-edit-btn');
-    const closeBtn = document.querySelector('.close-btn');
-
-    function openEditModal() {
-        editProfileModal?.classList.add('active');
-    }
-
-    function closeEditModal() {
-        editProfileModal?.classList.remove('active');
-    }
-
-    // Event listeners
-    editProfileBtn?.addEventListener('click', openEditModal);
-    cancelEditBtn?.addEventListener('click', closeEditModal);
-    closeBtn?.addEventListener('click', closeEditModal);
-
-    editProfileModal?.addEventListener('click', (e) => {
-        if (e.target === editProfileModal) {
-            closeEditModal();
-        }
-    });
-
-    generateActivityGrid();
 });

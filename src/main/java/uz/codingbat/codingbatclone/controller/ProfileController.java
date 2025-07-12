@@ -11,13 +11,13 @@ import uz.codingbat.codingbatclone.entity.User;
 import uz.codingbat.codingbatclone.entity.UserActivity;
 import uz.codingbat.codingbatclone.entity.UserStats;
 import uz.codingbat.codingbatclone.payload.ProfileDTO;
-import uz.codingbat.codingbatclone.payload.UserDTO;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static uz.codingbat.codingbatclone.utils.Util.isSessionValid;
 
@@ -32,29 +32,29 @@ public class ProfileController extends HttpServlet {
                 UUID userId = (UUID) req.getSession().getAttribute("user_id");
                 User user = entityManager.find(User.class, userId);
 
-                UserStats stats = entityManager.createQuery("select s from UserStats s where s.user.id= :id", UserStats.class)
+                UserStats stats = entityManager.createQuery("select s from UserStats s where s.user.id = :id", UserStats.class)
                         .setParameter("id", userId)
                         .getSingleResultOrNull();
 
-                List<UserActivity> resultList = entityManager.createQuery(
+                List<UserActivity> activities = entityManager.createQuery(
                                 "select u from UserActivity u where u.user.id = :id", UserActivity.class)
                         .setParameter("id", userId)
                         .getResultList();
 
-                Map<String, Integer> activityMap = resultList.stream()
-                        .collect(Collectors.toMap(
-                                activity -> activity.getDate().toString(),
-                                UserActivity::getProblemsSolved
-                        ));
+                Map<LocalDate, Integer> activityMap = new HashMap<>();
+                for (UserActivity activity : activities) {
+                    activityMap.put(activity.getDate(), activity.getProblemsSolved());
+                }
 
                 ProfileDTO dto = ProfileDTO.builder()
+                        .id(user.getId())
                         .fullName(user.getFullName())
                         .email(user.getEmail())
                         .password(user.getPassword())
                         .role(user.getRole())
-                        .solvedProblemsCount(stats.getSolvedProblemsCount())
-                        .currentStreak(stats.getCurrentStreak())
-                        .bestStreak(stats.getBestStreak())
+                        .solvedProblemsCount(stats != null ? stats.getSolvedProblemsCount() : 0)
+                        .currentStreak(stats != null ? stats.getCurrentStreak() : 0)
+                        .bestStreak(stats != null ? stats.getBestStreak() : 0)
                         .activity(activityMap)
                         .build();
 

@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css"/>
-
-    <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
 </head>
 <body>
 
@@ -159,7 +155,8 @@
                         <label for="code-editor"></label>
                         <textarea id="code-editor" name="code"
                                   class="code-editor"><c:out
-                                value="${f_code != null ? f_code : problem.codeTemplate}"/></textarea>
+                                value="${f_code != null ? f_code : sessionScope.results.code==null ?
+                                 problem.codeTemplate: sessionScope.results.code}"/></textarea>
                     </div>
                 </div>
 
@@ -168,17 +165,41 @@
                     <div class="results-header">
                         <h3>Test Results</h3>
                         <div class="results-summary" id="results-summary">
-                            <span class="status-passed">Passed: 0</span>
-                            <span class="status-failed">Failed: 0</span>
-                            <span class="status-error">Error: 0</span>
+                            <span class="status-passed">${sessionScope.results.passed} Passed</span>
+                            <span class="status-error">${sessionScope.results.failed} Failed</span>
+                            <span class="status-failed">${sessionScope.results.error} Error</span>
                         </div>
                     </div>
+
                     <div class="test-results" id="test-results">
+                        <c:forEach items="${sessionScope.results.details}" var="d" varStatus="loop">
+                            <div class="test-result">
+                                <div class="test-result-header">
+                                    <span class="test-result-title">Test Case ${loop.index + 1}</span>
+                                    <span class="test-result-status"></span>
+                                </div>
+                                <div class="test-result-content">
+                                    <div class="test-input"><strong>Input:</strong>
+                                        <pre class="code-block">${d.input}</pre>
+                                    </div>
+                                    <div class="test-expected"><strong>Expected Output:</strong>
+                                        <pre class="code-block">${d.output}</pre>
+                                    </div>
+                                    <div class="test-actual"><strong>Your Output:</strong>
+                                        <pre class="code-block">${d.yourOutput}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
-
         </div>
+
+        <c:if test="${not empty sessionScope.results}">
+            <c:remove var="results" scope="session"/>
+        </c:if>
+
     </main>
 </div>
 
@@ -219,6 +240,7 @@
 
 <script src="assets/js/problem.js"></script>
 <script src="assets/js/theme.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
 </body>
 </html>

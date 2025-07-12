@@ -4,12 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 import uz.codingbat.codingbatclone.entity.enums.Role;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
 @Data
 @Builder
 public class ProfileDTO {
+    private UUID id;
     private String fullName;
     private String email;
     private String password;
@@ -17,5 +19,5 @@ public class ProfileDTO {
     private Integer solvedProblemsCount;
     private Integer currentStreak;
     private Integer bestStreak;
-    private Map<String, Integer> activity;
+    private Map<LocalDate, Integer> activity;
 }

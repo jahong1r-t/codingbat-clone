@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.payload.TestResultDTO;
-import uz.codingbat.codingbatclone.payload.TestResultSummaryDTO;
+import uz.codingbat.codingbatclone.payload.TestSummaryDTO;
 
 import static uz.codingbat.codingbatclone.utils.Util.isSessionValid;
 
@@ -19,14 +19,15 @@ public class ProblemService {
         String code = req.getParameter("code");
         String id = req.getParameter("id");
 
-        TestResultSummaryDTO results = compileService.summarizeTestResults(compileService.compile(code, id), code);
-        req.setAttribute("results", results);
+        TestSummaryDTO results = compileService.summarizeTestResults(compileService.compile(code, id), code);
+        req.getSession().setAttribute("results", results);
 
         if (isSessionValid(req)) {
             try (EntityManager entityManager = jpaConnection.entityManager()) {
                 entityManager.persist(results);
             }
 
+            req.getRequestDispatcher("results.jsp").forward(req, resp);
             resp.sendRedirect("/problem?id=" + id + "&run=" + true);
             return;
         }
