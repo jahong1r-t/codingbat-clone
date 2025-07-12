@@ -18,7 +18,7 @@ public interface Util {
     }
 
     static boolean isSessionValid(HttpServletRequest req) {
-        Object id = req.getSession().getAttribute("is_authenticated");
+        Object id = req.getSession().getAttribute("user_id");
         return id != null && id.toString() != null && !id.toString().isEmpty();
     }
 

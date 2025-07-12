@@ -17,6 +17,7 @@ public class MainService {
     public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getSession().getAttribute("user_id") != null
                 && req.getSession().getAttribute("is_authenticated").equals("true")) {
+
             System.err.println("Hello world!");
         } else {
             try (EntityManager entityManager = jpaConnection.entityManager()) {
@@ -57,7 +58,7 @@ public class MainService {
 
                     req.setAttribute("next", next);
                     req.setAttribute("previous", previous);
-                    req.setAttribute(   "size", size);
+                    req.setAttribute("size", size);
                     req.setAttribute("problems", problems);
                     req.setAttribute("totalPages", totalPages);
                     req.setAttribute("currentPage", currentPage);
@@ -93,6 +94,7 @@ public class MainService {
 
             }
 
+            req.getSession().setAttribute("is_authenticated", false);
             req.getRequestDispatcher("index.jsp").forward(req, resp);
         }
     }

@@ -141,6 +141,10 @@
     background-color: var(--success-color);
 }
 
+.status-warning {
+    background-color: var(--warning-color);
+}
+
 .problem-info {
     flex: 1;
 }
