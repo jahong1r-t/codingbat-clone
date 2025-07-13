@@ -157,7 +157,7 @@
                                 <c:otherwise>
                                     <c:choose>
                                         <c:when test="${cache != null && cache.status eq 'SOLVED'}">
-                                            <button class="btn btn-primary solve-btn">Try Again</button>
+                                            <button class="btn btn-primary solve-btn">Completed</button>
                                         </c:when>
                                         <c:when test="${cache != null && cache.status eq 'OPENED'}">
                                             <button class="btn btn-primary solve-btn">Continue</button>

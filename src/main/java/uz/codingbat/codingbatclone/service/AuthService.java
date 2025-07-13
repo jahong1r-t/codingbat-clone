@@ -48,6 +48,7 @@ public class AuthService {
             req.getSession().setAttribute("role", user.getRole());
             req.getSession().setAttribute("is_authenticated", true);
 
+
             if (user.getRole() == Role.ADMIN) {
                 resp.sendRedirect("/admin");
                 return;
