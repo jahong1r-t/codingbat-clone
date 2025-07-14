@@ -22,9 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = new URL(window.location.href);
         if (url.searchParams.has('run')) {
             url.searchParams.delete('run');
-            window.history.replaceState({}, document.title, url.toString());
-            console.log('Removed run parameter from URL');
-        }
+            window.history.replaceState({}, document.title, url.toString());}
     }
 
     function checkUrlAndSetTab() {
@@ -35,8 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const resultsTab = document.querySelector('.editor-tab[data-tab="results"]');
             if (resultsTab) {
                 switchToTab(resultsTab);
-                console.log('Automatically opened Test Results tab based on URL parameter');
-
                 cleanUrl();
             }
         }
@@ -75,9 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             form.addEventListener("submit", function (event) {
                 const hiddenInput = form.querySelector("input[name='code']");
                 if (hiddenInput) {
-                    hiddenInput.value = codeMirrorEditor.getValue();
-                    console.log("Form submitted with code:", hiddenInput.value);
-                }
+                    hiddenInput.value = codeMirrorEditor.getValue();}
             });
         });
 

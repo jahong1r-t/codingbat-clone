@@ -70,18 +70,6 @@
             </div>
         </header>
 
-        <c:choose>
-            <c:when test="${sessionScope.is_authenticated == true}">
-                true
-            </c:when>
-            <c:when test="${sessionScope.is_authenticated == false}">
-                false
-            </c:when>
-            <c:otherwise>
-                null
-            </c:otherwise>
-        </c:choose>
-
         <!-- Filters -->
         <div class="filters">
             <a href="${pageContext.request.contextPath}/">
@@ -100,28 +88,26 @@
 
         <!-- Problems List -->
         <div class="problem-list" id="problem-list">
-            <c:choose>
-                <c:when test="${sessionScope.is_authenticated == true}">
-                    <c:forEach items="${page.content}" var="p">
-                        <c:set var="cache" value="${sessionScope.cache[p.id.toString()]}"/>
-                        <div class="problem-card">
-                            <div class="problem-status">
-                                <c:choose>
-                                    <c:when test="${cache != null && cache.status eq 'SOLVED'}">
-                                        <span class="status-icon status-completed"></span>
-                                    </c:when>
-                                    <c:when test="${cache != null && cache.status eq 'OPENED'}">
-                                        <span class="status-icon status-warning"></span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="status-icon status-default"></span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+            <c:forEach items="${page.content}" var="p">
+                <c:set var="ca" value="${sessionScope.cache[p.id.toString()]}"/>
+                <div class="problem-card">
+                    <div class="problem-status">
+                        <c:choose>
+                            <c:when test="${ca != null && ca.status eq 'SOLVED'}">
+                                <span class="status-icon status-completed"></span>
+                            </c:when>
+                            <c:when test="${ca != null && ca.status eq 'OPENED'}">
+                                <span class="status-icon status-warning"></span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="status-icon status-default"></span>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
 
-                            <div class="problem-info">
-                                <h3 class="problem-title">${p.title}</h3>
-                                <div class="problem-meta">
+                    <div class="problem-info">
+                        <h3 class="problem-title">${p.title}</h3>
+                        <div class="problem-meta">
                             <span class="problem-difficulty
                                 ${p.difficulty == 'EASY' ? 'difficulty-easy' :
                                   p.difficulty == 'MEDIUM' ? 'difficulty-medium' :
@@ -130,98 +116,158 @@
                                             p.difficulty == 'MEDIUM' ? 'Medium' :
                                                     'Hard'}
                             </span>
-                                    <span class="problem-completion">
+                            <span class="problem-completion">
                                 <c:choose>
-                                    <c:when test="${cache != null && cache.status eq 'SOLVED'}">Completed</c:when>
-                                    <c:when test="${cache != null && cache.status eq 'OPENED'}">Continue</c:when>
+                                    <c:when test="${ca != null && ca.status eq 'SOLVED'}">Completed</c:when>
+                                    <c:when test="${ca != null && ca.status eq 'OPENED'}">Continue</c:when>
                                     <c:otherwise>Solve</c:otherwise>
                                 </c:choose>
                             </span>
-                                </div>
-                            </div>
-
-                            <div class="problem-action">
-                                <a href="${pageContext.request.contextPath}/problem?id=${p.id}">
-                                    <c:choose>
-                                        <c:when test="${cache != null && cache.status eq 'SOLVED'}">
-                                            <button class="btn btn-primary solve-btn">Completed</button>
-                                        </c:when>
-                                        <c:when test="${cache != null && cache.status eq 'OPENED'}">
-                                            <button class="btn btn-primary solve-btn">Continue</button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <button class="btn btn-primary solve-btn">Solve</button>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </a>
-                            </div>
                         </div>
-                    </c:forEach>
-                </c:when>
+                    </div>
 
-                <c:when test="${sessionScope.is_authenticated == false || sessionScope.is_authenticated == null}">
-                    <c:forEach items="${page.content}" var="p">
-                        <c:set var="cache" value="${sessionScope.cache[p.id.toString()]}"/>
+                    <div class="problem-action">
+                        <a href="${pageContext.request.contextPath}/problem?id=${p.id}">
+                            <c:choose>
+                                <c:when test="${ca != null && ca.status eq 'SOLVED'}">
+                                    <button class="btn btn-primary solve-btn">Completed</button>
+                                </c:when>
+                                <c:when test="${ca != null && ca.status eq 'OPENED'}">
+                                    <button class="btn btn-primary solve-btn">Continue</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="btn btn-primary solve-btn">Solve</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                    </div>
+                </div>
+            </c:forEach>
+<%--            <c:choose>--%>
+<%--                <c:when test="${sessionScope.is_authenticated == true}">--%>
+<%--                    <c:forEach items="${page.content}" var="p">--%>
+<%--                        <c:set var="ca" value="${sessionScope.cache[p.id.toString()]}"/>--%>
 
-                        <div class="problem-card">
-                            <div class="problem-status">
-                                <c:choose>
-                                    <c:when test="${cache != null && cache.status eq 'SOLVED'}">
-                                        <span class="status-icon status-completed"></span>
-                                    </c:when>
-                                    <c:when test="${cache != null && cache.status eq 'OPENED'}">
-                                        <span class="status-icon status-warning"></span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="status-icon status-default"></span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+<%--                        <div><c:out value="${ca}"/></div>--%>
 
-                            <div class="problem-info">
-                                <h3 class="problem-title">${p.title}</h3>
-                                <div class="problem-meta">
-                            <span class="problem-difficulty
-                                ${p.difficulty == 'EASY' ? 'difficulty-easy' :
-                                  p.difficulty == 'MEDIUM' ? 'difficulty-medium' :
-                                  'difficulty-hard'}">
-                                    ${p.difficulty == 'EASY' ? 'Easy' :
-                                            p.difficulty == 'MEDIUM' ? 'Medium' :
-                                                    'Hard'}
-                            </span>
-                                    <span class="problem-completion">
-                                <c:choose>
-                                    <c:when test="${cache != null && cache.status eq 'SOLVED'}">Completed</c:when>
-                                    <c:when test="${cache != null && cache.status eq 'OPENED'}">Continue</c:when>
-                                    <c:otherwise>Solve</c:otherwise>
-                                </c:choose>
-                            </span>
-                                </div>
-                            </div>
+<%--                        <div class="problem-card">--%>
+<%--                            <div class="problem-status">--%>
+<%--                                <c:choose>--%>
+<%--                                    <c:when test="${ca != null && ca.status eq 'SOLVED'}">--%>
+<%--                                        <span class="status-icon status-completed"></span>--%>
+<%--                                    </c:when>--%>
+<%--                                    <c:when test="${ca != null && ca.status eq 'OPENED'}">--%>
+<%--                                        <span class="status-icon status-warning"></span>--%>
+<%--                                    </c:when>--%>
+<%--                                    <c:otherwise>--%>
+<%--                                        <span class="status-icon status-default"></span>--%>
+<%--                                    </c:otherwise>--%>
+<%--                                </c:choose>--%>
+<%--                            </div>--%>
 
-                            <div class="problem-action">
-                                <a href="${pageContext.request.contextPath}/problem?id=${p.id}">
-                                    <c:choose>
-                                        <c:when test="${cache != null && cache.status eq 'SOLVED'}">
-                                            <button class="btn btn-primary solve-btn">Completed</button>
-                                        </c:when>
-                                        <c:when test="${cache != null && cache.status eq 'OPENED'}">
-                                            <button class="btn btn-primary solve-btn">Continue</button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <button class="btn btn-primary solve-btn">Solve</button>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </a>
-                            </div>
-                        </div>
-                    </c:forEach>
-                </c:when>
+<%--                            <div class="problem-info">--%>
+<%--                                <h3 class="problem-title">${p.title}</h3>--%>
+<%--                                <div class="problem-meta">--%>
+<%--                            <span class="problem-difficulty--%>
+<%--                                ${p.difficulty == 'EASY' ? 'difficulty-easy' :--%>
+<%--                                  p.difficulty == 'MEDIUM' ? 'difficulty-medium' :--%>
+<%--                                  'difficulty-hard'}">--%>
+<%--                                    ${p.difficulty == 'EASY' ? 'Easy' :--%>
+<%--                                            p.difficulty == 'MEDIUM' ? 'Medium' :--%>
+<%--                                                    'Hard'}--%>
+<%--                            </span>--%>
+<%--                                    <span class="problem-completion">--%>
+<%--                                <c:choose>--%>
+<%--                                    <c:when test="${ca != null && ca.status eq 'SOLVED'}">Completed</c:when>--%>
+<%--                                    <c:when test="${ca != null && ca.status eq 'OPENED'}">Continue</c:when>--%>
+<%--                                    <c:otherwise>Solve</c:otherwise>--%>
+<%--                                </c:choose>--%>
+<%--                            </span>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
 
-                <c:otherwise>
-                    <div class="status-default">UNKNOWN</div>
-                </c:otherwise>
-            </c:choose>
+<%--                            <div class="problem-action">--%>
+<%--                                <a href="${pageContext.request.contextPath}/problem?id=${p.id}">--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${ca != null && ca.status eq 'SOLVED'}">--%>
+<%--                                            <button class="btn btn-primary solve-btn">Completed</button>--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:when test="${ca != null && ca.status eq 'OPENED'}">--%>
+<%--                                            <button class="btn btn-primary solve-btn">Continue</button>--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:otherwise>--%>
+<%--                                            <button class="btn btn-primary solve-btn">Solve</button>--%>
+<%--                                        </c:otherwise>--%>
+<%--                                    </c:choose>--%>
+<%--                                </a>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </c:forEach>--%>
+<%--                </c:when>--%>
+
+<%--                <c:when test="${sessionScope.is_authenticated == false || sessionScope.is_authenticated == null}">--%>
+<%--                    <c:forEach items="${page.content}" var="p">--%>
+<%--                        <c:set var="cach" value="${sessionScope.cache[p.id.toString()]}"/>--%>
+
+<%--                        <div class="problem-card">--%>
+<%--                            <div class="problem-status">--%>
+<%--                                <c:choose>--%>
+<%--                                    <c:when test="${cach != null && cach.status eq 'SOLVED'}">--%>
+<%--                                        <span class="status-icon status-completed"></span>--%>
+<%--                                    </c:when>--%>
+<%--                                    <c:when test="${cach != null && cach.status eq 'OPENED'}">--%>
+<%--                                        <span class="status-icon status-warning"></span>--%>
+<%--                                    </c:when>--%>
+<%--                                    <c:otherwise>--%>
+<%--                                        <span class="status-icon status-default"></span>--%>
+<%--                                    </c:otherwise>--%>
+<%--                                </c:choose>--%>
+<%--                            </div>--%>
+
+<%--                            <div class="problem-info">--%>
+<%--                                <h3 class="problem-title">${p.title}</h3>--%>
+<%--                                <div class="problem-meta">--%>
+<%--                            <span class="problem-difficulty--%>
+<%--                                ${p.difficulty == 'EASY' ? 'difficulty-easy' :--%>
+<%--                                  p.difficulty == 'MEDIUM' ? 'difficulty-medium' :--%>
+<%--                                  'difficulty-hard'}">--%>
+<%--                                    ${p.difficulty == 'EASY' ? 'Easy' :--%>
+<%--                                            p.difficulty == 'MEDIUM' ? 'Medium' :--%>
+<%--                                                    'Hard'}--%>
+<%--                            </span>--%>
+<%--                                    <span class="problem-completion">--%>
+<%--                                <c:choose>--%>
+<%--                                    <c:when test="${cach != null && cach.status eq 'SOLVED'}">Completed</c:when>--%>
+<%--                                    <c:when test="${cach != null && cach.status eq 'OPENED'}">Continue</c:when>--%>
+<%--                                    <c:otherwise>Solve</c:otherwise>--%>
+<%--                                </c:choose>--%>
+<%--                            </span>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+
+<%--                            <div class="problem-action">--%>
+<%--                                <a href="${pageContext.request.contextPath}/problem?id=${p.id}">--%>
+<%--                                    <c:choose>--%>
+<%--                                        <c:when test="${cach != null && cach.status eq 'SOLVED'}">--%>
+<%--                                            <button class="btn btn-primary solve-btn">Completed</button>--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:when test="${cach != null && cach.status eq 'OPENED'}">--%>
+<%--                                            <button class="btn btn-primary solve-btn">Continue</button>--%>
+<%--                                        </c:when>--%>
+<%--                                        <c:otherwise>--%>
+<%--                                            <button class="btn btn-primary solve-btn">Solve</button>--%>
+<%--                                        </c:otherwise>--%>
+<%--                                    </c:choose>--%>
+<%--                                </a>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </c:forEach>--%>
+<%--                </c:when>--%>
+
+<%--                <c:otherwise>--%>
+<%--                    <div class="status-default">UNKNOWN</div>--%>
+<%--                </c:otherwise>--%>
+<%--            </c:choose>--%>
 
             <%--
                 <c:forEach items="${page.content}" var="p">

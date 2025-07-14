@@ -14,6 +14,7 @@ import uz.codingbat.codingbatclone.payload.TestSummaryDTO;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static uz.codingbat.codingbatclone.utils.Util.isSessionValid;
@@ -68,29 +69,29 @@ public class ProblemService {
                         stats.setBestStreak(stats.getCurrentStreak());
                     }
 
+
                     stats.setSolvedProblemsCount(stats.getSolvedProblemsCount() + 1);
                     stats.setLastSolvedDate(today);
+
+                    manageSolution(req, entityManager, entityManager.find(Problem.class, UUID.fromString(id)), true, code);
 
                     entityManager.merge(stats);
                 }
 
                 entityManager.getTransaction().commit();
             }
-            resp.sendRedirect("/problem?id=" + id + "&run=" + true);
-            return;
-        }
 
-        Map<String, CacheDTO> cache = (Map<String, CacheDTO>)
-                req.getSession().getAttribute("cache");
+        }
 
         CacheDTO build = CacheDTO.builder()
                 .code(code)
                 .status(results.getError() == 0 && results.getFailed() == 0 ? SolveStatus.SOLVED : SolveStatus.OPENED)
                 .build();
 
-        cache.put(id, build);
+        Map<String, CacheDTO> cache = (Map<String, CacheDTO>)
+                req.getSession().getAttribute("cache");
 
-        req.getSession().setAttribute("cache", cache);
+        cache.put(id, build);
 
         resp.sendRedirect("/problem?id=" + id + "&run=" + true);
     }
@@ -116,7 +117,6 @@ public class ProblemService {
                     .hidden(t.getIsHidden())
                     .build()).toList();
 
-
             ProblemRespDTO build = ProblemRespDTO.builder()
                     .id(problem.getId())
                     .title(problem.getTitle())
@@ -125,6 +125,33 @@ public class ProblemService {
                     .codeTemplate(problem.getCodeTemplate())
                     .testCases(list)
                     .build();
+
+            if (isSessionValid(req)) {
+                entityManager.getTransaction().begin();
+                UUID userId = (UUID) req.getSession().getAttribute("user_id");
+                User user = entityManager.find(User.class, userId);
+
+                List<Solution> existingSolutions = entityManager.createQuery(" SELECT s FROM Solution s WHERE s.user = :user AND s.problem = :problem ", Solution.class)
+                        .setParameter("user", user)
+                        .setParameter("problem", problem)
+                        .getResultList();
+
+
+                System.err.println(existingSolutions.isEmpty());
+
+                if (existingSolutions.isEmpty()) {
+
+                    Solution solution = Solution.builder()
+                            .user(user)
+                            .problem(problem)
+                            .code(problem.getCodeTemplate())
+                            .solveStatus(SolveStatus.OPENED)
+                            .build();
+
+                    entityManager.persist(solution);
+                    entityManager.getTransaction().commit();
+                }
+            }
 
             req.setAttribute("problem", build);
 
@@ -135,15 +162,45 @@ public class ProblemService {
                 CacheDTO cacheDTO = CacheDTO.builder()
                         .status(SolveStatus.OPENED)
                         .build();
-                cache.put(problem.getId().toString(), cacheDTO);
-                req.getSession().setAttribute("cache", cache);
+                cache.putIfAbsent(problem.getId().toString(), cacheDTO);
+            } else {
+                CacheDTO cacheDTO = CacheDTO.builder()
+                        .status(SolveStatus.OPENED)
+                        .build();
+                cache.putIfAbsent(problem.getId().toString(), cacheDTO);
             }
 
-            req.setAttribute("f_code", req.getSession().getAttribute("f_code"));
+            req.getSession().setAttribute("cache", cache);
             req.getRequestDispatcher("problem.jsp").forward(req, resp);
-
-            req.getSession().removeAttribute("f_code");
         }
 
+    }
+
+    private void manageSolution(HttpServletRequest req, EntityManager entityManager, Problem problem, Boolean isSolved, String code) throws IOException {
+        UUID userId = (UUID) req.getSession().getAttribute("user_id");
+        User user = entityManager.find(User.class, userId);
+
+        List<Solution> existingSolutions = entityManager.createQuery(" SELECT s FROM Solution s WHERE s.user = :user AND s.problem = :problem ", Solution.class)
+                .setParameter("user", user)
+                .setParameter("problem", problem)
+                .getResultList();
+
+        if (existingSolutions.isEmpty()) {
+            Solution solution = Solution.builder()
+                    .user(user)
+                    .problem(problem)
+                    .code(problem.getCodeTemplate())
+                    .solveStatus(isSolved ? SolveStatus.SOLVED : SolveStatus.OPENED)
+                    .build();
+
+            entityManager.persist(solution);
+            return;
+        }
+
+        Solution solution = existingSolutions.get(0);
+        solution.setSolveStatus(isSolved ? SolveStatus.SOLVED : SolveStatus.OPENED);
+        solution.setCode(code);
+
+        entityManager.merge(solution);
     }
 }

@@ -149,14 +149,22 @@
                         </div>
                     </div>
 
+
+                    <c:set var="ca" value="${sessionScope.cache[problem.id.toString()]}"/>
+
                     <div class="code-editor-wrapper">
                         <div class="line-numbers" id="line-numbers">1<br>2<br>3<br>4</div>
                         <input type="hidden" id="problem-id" value="${problem.id}"/>
                         <label for="code-editor"></label>
                         <textarea id="code-editor" name="code"
                                   class="code-editor"><c:out
-                                value="${f_code != null ? f_code : sessionScope.results.code==null ?
-                                 problem.codeTemplate: sessionScope.results.code}"/></textarea>
+                                value="${ca.code != null ? ca.code : problem.codeTemplate}"/></textarea>
+
+
+                        <%--                        <textarea id="code-editor" name="code"--%>
+                        <%--                                  class="code-editor"><c:out--%>
+                        <%--                                value="${f_code != null ? f_code : sessionScope.results.code==null ?--%>
+                        <%--                                 problem.codeTemplate : sessionScope.cache[p.id.toString()]}"/></textarea>--%>
                     </div>
                 </div>
 

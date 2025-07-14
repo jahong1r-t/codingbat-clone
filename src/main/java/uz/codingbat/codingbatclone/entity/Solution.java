@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Solution {
+public class Solution extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -29,8 +28,7 @@ public class Solution {
     @Column(columnDefinition = "TEXT")
     private String code;
 
+    @Enumerated(EnumType.STRING)
     private SolveStatus solveStatus;
-
-    private LocalDateTime submittedAt;
 }
 

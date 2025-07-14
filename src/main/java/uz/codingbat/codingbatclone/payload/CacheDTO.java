@@ -16,6 +16,7 @@ import java.util.Set;
 public class CacheDTO {
     private String code;
     private SolveStatus status;
+
 }
 
 

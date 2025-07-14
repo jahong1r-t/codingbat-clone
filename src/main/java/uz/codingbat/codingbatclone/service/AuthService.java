@@ -5,9 +5,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
+import uz.codingbat.codingbatclone.entity.Solution;
 import uz.codingbat.codingbatclone.entity.User;
 import uz.codingbat.codingbatclone.entity.UserStats;
 import uz.codingbat.codingbatclone.entity.enums.Role;
+import uz.codingbat.codingbatclone.payload.CacheDTO;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static uz.codingbat.codingbatclone.utils.Util.*;
 
@@ -40,11 +47,12 @@ public class AuthService {
 
                 return;
             }
-
             req.getSession().removeAttribute("cache");
+
             req.getSession().setAttribute("user_id", user.getId());
             req.getSession().setAttribute("role", user.getRole());
             req.getSession().setAttribute("is_authenticated", true);
+            req.getSession().setAttribute("cache", initUserData(entityManager, user.getId()));
 
             if (user.getRole() == Role.ADMIN) {
                 resp.sendRedirect("/admin");
@@ -98,6 +106,7 @@ public class AuthService {
             entityManager.persist(build);
             entityManager.getTransaction().commit();
 
+            req.getSession().removeAttribute("cache");
             req.getSession().setAttribute("user_id", user.getId());
             req.getSession().setAttribute("role", user.getRole());
             req.getSession().setAttribute("is_authenticated", true);
@@ -111,6 +120,24 @@ public class AuthService {
     public void logOut(HttpServletRequest req, HttpServletResponse resp) {
         req.getSession().invalidate();
         resp.sendRedirect("/");
+    }
+
+    public Map<String, CacheDTO> initUserData(EntityManager entityManager, UUID id) {
+        List<Solution> solutions = entityManager.createQuery("select s from Solution s where s.user.id = :id", Solution.class)
+                .setParameter("id", id)
+                .getResultList();
+
+        Map<String, CacheDTO> solutionMap = new HashMap<>();
+
+        for (Solution solution : solutions) {
+            CacheDTO build = CacheDTO.builder()
+                    .code(solution.getCode())
+                    .status(solution.getSolveStatus())
+                    .build();
+            solutionMap.put(solution.getProblem().getId().toString(), build);
+        }
+
+        return solutionMap;
     }
 
     public static AuthService getInstance() {
