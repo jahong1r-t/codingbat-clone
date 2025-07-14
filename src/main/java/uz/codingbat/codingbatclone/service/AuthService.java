@@ -1,7 +1,6 @@
 package uz.codingbat.codingbatclone.service;
 
 import jakarta.persistence.EntityManager;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -9,8 +8,6 @@ import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.User;
 import uz.codingbat.codingbatclone.entity.UserStats;
 import uz.codingbat.codingbatclone.entity.enums.Role;
-
-import java.io.IOException;
 
 import static uz.codingbat.codingbatclone.utils.Util.*;
 
@@ -48,13 +45,11 @@ public class AuthService {
             req.getSession().setAttribute("role", user.getRole());
             req.getSession().setAttribute("is_authenticated", true);
 
-
             if (user.getRole() == Role.ADMIN) {
                 resp.sendRedirect("/admin");
                 return;
             }
         }
-
 
         resp.sendRedirect("/");
     }
@@ -67,16 +62,9 @@ public class AuthService {
 
         if (isValidEmail(email) || isValidPassword(password) || !isValidFullName(fullName)) {
             req.setAttribute("error", "Please provide a valid email, password (at least 6 characters), and full name.");
-            try {
-                req.getRequestDispatcher("auth.jsp").forward(req, resp);
-            } catch (ServletException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-            }
+            req.getRequestDispatcher("/auth.jsp").forward(req, resp);
             return;
         }
-
 
         try (EntityManager entityManager = jdbc.entityManager()) {
             if (entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
@@ -109,7 +97,6 @@ public class AuthService {
             entityManager.persist(build);
             entityManager.getTransaction().commit();
 
-
             req.getSession().setAttribute("user_id", user.getId());
             req.getSession().setAttribute("role", user.getRole());
             req.getSession().setAttribute("is_authenticated", true);
@@ -125,7 +112,7 @@ public class AuthService {
         resp.sendRedirect("/");
     }
 
-    public synchronized static AuthService getInstance() {
+    public static AuthService getInstance() {
         if (instance == null) {
             instance = new AuthService();
         }

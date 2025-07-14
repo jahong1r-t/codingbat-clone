@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @WebServlet("")
 public class MainController extends HttpServlet {
-    private final MainService mainService = new MainService();
+    private final MainService mainService = MainService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

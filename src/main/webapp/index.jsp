@@ -1,3 +1,4 @@
+<%--@elvariable id="filter" type="uz.codingbat.codingbatclone"--%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -16,7 +17,8 @@
     <nav class="navbar">
         <div class="navbar-brand">
             <a href="${pageContext.request.contextPath}/">
-                <img id="logo-img" src="${pageContext.request.contextPath}/assets/img/logo-black.png" width="150px" alt="logo">
+                <img id="logo-img" src="${pageContext.request.contextPath}/assets/img/logo-black.png" width="150px"
+                     alt="logo">
             </a>
         </div>
 
@@ -37,7 +39,8 @@
                             <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
                                 <i class="fas fa-user-circle"></i> Profile
                             </a>
-                            <form action="${pageContext.request.contextPath}/auth/logout" method="post" class="dropdown-item-form">
+                            <form action="${pageContext.request.contextPath}/auth/logout" method="post"
+                                  class="dropdown-item-form">
                                 <button type="submit" class="dropdown-item logout-btn">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </button>
@@ -56,12 +59,12 @@
             </c:choose>
         </div>
     </nav>
-
     <!-- Dashboard -->
     <main class="dashboard-container">
         <header class="dashboard-header">
             <h2>Java Coding</h2>
             <div class="search-container">
+                <label for="search-input"></label>
                 <input type="text" id="search-input" placeholder="Search problems...">
                 <i class="fas fa-search"></i>
             </div>
@@ -70,41 +73,45 @@
         <!-- Filters -->
         <div class="filters">
             <a href="${pageContext.request.contextPath}/">
-                <button class="filter-btn ${filter == null ? 'active' : ''}">All</button>
+                <button class="filter-btn ${page.filter == null ? 'active' : ''}">All</button>
             </a>
             <a href="${pageContext.request.contextPath}/?filter=easy">
-                <button class="filter-btn ${filter == 'easy' ? 'active' : ''}">Easy</button>
+                <button class="filter-btn ${page.filter == 'easy' ? 'active' : ''}">Easy</button>
             </a>
             <a href="${pageContext.request.contextPath}/?filter=medium">
-                <button class="filter-btn ${filter == 'medium' ? 'active' : ''}">Medium</button>
+                <button class="filter-btn ${page.filter == 'medium' ? 'active' : ''}">Medium</button>
             </a>
             <a href="${pageContext.request.contextPath}/?filter=hard">
-                <button class="filter-btn ${filter == 'hard' ? 'active' : ''}">Hard</button>
+                <button class="filter-btn ${page.filter == 'hard' ? 'active' : ''}">Hard</button>
             </a>
         </div>
 
         <!-- Problems List -->
         <div class="problem-list" id="problem-list">
-            <c:forEach items="${problems}" var="p">
-                <c:set var="problemIdStr" value="${p.id.toString()}" />
-                <c:set var="cache" value="${sessionScope.cache[problemIdStr]}" />
+            <c:forEach items="${page.content}" var="p">
+                <c:set var="problemIdStr" value="${p.id.toString()}"/>
+                <c:set var="cache" value="${sessionScope.cache[problemIdStr]}"/>
 
                 <div class="problem-card">
                     <div class="problem-status">
                         <c:choose>
                             <c:when test="${sessionScope.is_authenticated == true}">
-                                <c:set var="statusClass" value="status-default" />
-                                <c:if test="${p.status == 'SOLVED'}"><c:set var="statusClass" value="status-success" /></c:if>
-                                <c:if test="${p.status == 'OPENED'}"><c:set var="statusClass" value="status-warning" /></c:if>
+                                <c:set var="statusClass" value="status-default"/>
+                                <c:if test="${p.status == 'SOLVED'}"><c:set var="statusClass"
+                                                                            value="status-completed"/></c:if>
+                                <c:if test="${p.status == 'OPENED'}"><c:set var="statusClass"
+                                                                            value="status-warning"/></c:if>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="statusClass" value="status-default" />
-                                <c:if test="${cache != null && cache.status eq 'SOLVED'}"><c:set var="statusClass" value="status-success" /></c:if>
-                                <c:if test="${cache != null && cache.status eq 'OPENED'}"><c:set var="statusClass" value="status-warning" /></c:if>
+                                <c:set var="statusClass" value="status-default"/>
+                                <c:if test="${cache != null && cache.status eq 'SOLVED'}"><c:set var="statusClass"
+                                                                                                 value="status-completed"/></c:if>
+                                <c:if test="${cache != null && cache.status eq 'OPENED'}"><c:set var="statusClass"
+                                                                                                 value="status-warning"/></c:if>
                             </c:otherwise>
                         </c:choose>
 
-                        <span class="status-icon ${statusClass}"></span>
+                        <span class="status-icon  ${statusClass}"></span>
                     </div>
                     <div class="problem-info">
                         <h3 class="problem-title">${p.title}</h3>
@@ -122,14 +129,14 @@
                                 <c:choose>
                                     <c:when test="${sessionScope.is_authenticated == true}">
                                         <c:choose>
-                                            <c:when test="${p.status == 'SOLVED'}">Try Again</c:when>
+                                            <c:when test="${p.status == 'SOLVED'}">Completed</c:when>
                                             <c:when test="${p.status == 'OPENED'}">Continue</c:when>
                                             <c:otherwise>Solve</c:otherwise>
                                         </c:choose>
                                     </c:when>
                                     <c:otherwise>
                                         <c:choose>
-                                            <c:when test="${cache != null && cache.status eq 'SOLVED'}">Try Again</c:when>
+                                            <c:when test="${cache != null && cache.status eq 'SOLVED'}">Completed</c:when>
                                             <c:when test="${cache != null && cache.status eq 'OPENED'}">Continue</c:when>
                                             <c:otherwise>Solve</c:otherwise>
                                         </c:choose>
@@ -144,7 +151,7 @@
                                 <c:when test="${sessionScope.is_authenticated == true}">
                                     <c:choose>
                                         <c:when test="${p.status == 'SOLVED'}">
-                                            <button class="btn btn-primary solve-btn">Try Again</button>
+                                            <button class="btn btn-primary solve-btn">Completed</button>
                                         </c:when>
                                         <c:when test="${p.status == 'OPENED'}">
                                             <button class="btn btn-primary solve-btn">Continue</button>
@@ -180,8 +187,8 @@
 <!-- Pagination -->
 <div class="pagination">
     <c:choose>
-        <c:when test="${previous > 0}">
-            <a href="?filter=${filter}&page=${previous}" class="pagination-btn">
+        <c:when test="${page.previousPage > 0}">
+            <a href="?filter=${page.filter}&page=${page.previousPage}" class="pagination-btn">
                 <i class="fas fa-chevron-left"></i> Prev
             </a>
         </c:when>
@@ -192,13 +199,14 @@
         </c:otherwise>
     </c:choose>
 
-    <c:forEach begin="1" end="${totalPages}" var="i">
-        <a href="?filter=${filter}&page=${i}" class="pagination-btn ${i == currentPage ? 'active' : ''}">${i}</a>
+    <c:forEach begin="1" end="${page.totalPages}" var="i">
+        <a href="?filter=${page.filter}&page=${i}"
+           class="pagination-btn ${i == page.currentPage ? 'active' : ''}">${i}</a>
     </c:forEach>
 
     <c:choose>
-        <c:when test="${next <= totalPages}">
-            <a href="?filter=${filter}&page=${next}" class="pagination-btn">
+        <c:when test="${page.nextPage <= page.totalPages}">
+            <a href="?filter=${page.filter}&page=${page.nextPage}" class="pagination-btn">
                 Next <i class="fas fa-chevron-right"></i>
             </a>
         </c:when>

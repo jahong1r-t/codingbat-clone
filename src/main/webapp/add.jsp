@@ -76,10 +76,7 @@
         </div>
     </nav>
 
-
-
     <main class="problem-form-container">
-
 
         <form id="problem-form" class="problem-form">
             <div class="form-layout">
@@ -90,12 +87,13 @@
 
                         <div class="form-group">
                             <label for="problem-title">Problem Title *</label>
-                            <input type="text" id="problem-title" required placeholder="e.g., Two Sum, Binary Search">
+                            <input type="text" id="problem-title" name="title" required
+                                   placeholder="e.g., Two Sum, Binary Search">
                         </div>
 
                         <div class="form-group">
                             <label for="problem-difficulty">Difficulty *</label>
-                            <select id="problem-difficulty" required>
+                            <select id="problem-difficulty" name="difficulty" required>
                                 <option value="">Select difficulty</option>
                                 <option value="easy">Easy</option>
                                 <option value="medium">Medium</option>
@@ -109,7 +107,7 @@
 
                         <div class="form-group">
                             <label for="problem-description">Description *</label>
-                            <textarea id="problem-description" rows="12" required
+                            <textarea id="problem-description" name="description" rows="12" required
                                       placeholder="Write a detailed description of the problem. Include examples, constraints, and any special requirements."></textarea>
                         </div>
                     </div>
@@ -119,7 +117,7 @@
 
                         <div class="form-group">
                             <label for="problem-template">Java Code Template *</label>
-                            <textarea id="problem-template" rows="12" required class="code-textarea"
+                            <textarea id="problem-template" name="template" rows="12" required class="code-textarea"
                                       placeholder="public class Solution {
     public int solve(int[] nums) {
         // Write your code here
@@ -162,7 +160,7 @@
             <h4>Test Case</h4>
             <div class="test-case-controls">
                 <label class="checkbox-label">
-                    <input type="checkbox" class="hidden-checkbox">
+                    <input type="checkbox" class="hidden-checkbox" name="hidden">
                     <span class="checkbox-text">Hidden</span>
                 </label>
                 <button type="button" class="btn btn-danger btn-sm remove-test-case">
@@ -175,27 +173,20 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Input *</label>
-                    <label>
-<textarea class="test-input" rows="3" required
-          placeholder="Enter the input for this test case"></textarea>
-                    </label>
+                    <textarea class="test-input" name="input" rows="3" required
+                              placeholder="Enter the input for this test case"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Expected Output *</label>
-                    <textarea class="test-output" rows="3" required
+                    <textarea class="test-output" name="expectedOutput" rows="3" required
                               placeholder="Enter the expected output"></textarea>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label>Explanation (Optional)</label>
-                <textarea class="test-explanation" rows="2"
-                          placeholder="Explain why this input produces this output"></textarea>
             </div>
         </div>
     </div>
 </template>
+
 
 <script src="assets/js/form.js"></script>
 <script src="assets/js/theme.js"></script>

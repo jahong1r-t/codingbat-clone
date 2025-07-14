@@ -1,26 +1,14 @@
 package uz.codingbat.codingbatclone.controller;
 
-import jakarta.persistence.EntityManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import uz.codingbat.codingbatclone.db.JpaConnection;
-import uz.codingbat.codingbatclone.entity.Problem;
-import uz.codingbat.codingbatclone.entity.TestCase;
-import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
-import uz.codingbat.codingbatclone.payload.CacheDTO;
-import uz.codingbat.codingbatclone.payload.ProblemDTO;
-import uz.codingbat.codingbatclone.payload.TestCaseDTO;
-import uz.codingbat.codingbatclone.service.CompileService;
 import uz.codingbat.codingbatclone.service.ProblemService;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @WebServlet("/problem/*")
 public class ProblemController extends HttpServlet {
@@ -29,50 +17,7 @@ public class ProblemController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try (EntityManager entityManager = jpaConnection.entityManager()) {
-            Problem problem = entityManager
-                    .createQuery("SELECT p FROM Problem p WHERE p.id = :id", Problem.class)
-                    .setParameter("id", UUID.fromString(req.getParameter("id")))
-                    .getSingleResult();
-
-            List<TestCase> resultList = entityManager.createQuery("SELECT t from TestCase t where t.problem.id = :id", TestCase.class)
-                    .setParameter("id", UUID.fromString(req.getParameter("id")))
-                    .getResultList();
-
-            List<TestCaseDTO> list = resultList.stream().map(t -> TestCaseDTO.builder()
-                    .input(t.getInput())
-                    .output(t.getOutput())
-                    .hidden(t.getIsHidden())
-                    .build()).toList();
-
-
-            ProblemDTO build = ProblemDTO.builder()
-                    .id(problem.getId())
-                    .title(problem.getTitle())
-                    .description(problem.getDescription())
-                    .difficulty(problem.getDifficulty())
-                    .codeTemplate(problem.getCodeTemplate())
-                    .testCases(list)
-                    .build();
-
-            req.setAttribute("problem", build);
-
-            Map<String, CacheDTO> cache = (Map<String, CacheDTO>) req.getSession().getAttribute("cache");
-
-            if (cache == null) {
-                cache = new HashMap<>();
-                CacheDTO cacheDTO = CacheDTO.builder()
-                        .status(SolveStatus.OPENED)
-                        .build();
-                cache.put(problem.getId().toString(), cacheDTO);
-                req.getSession().setAttribute("cache", cache);
-            }
-
-            req.setAttribute("f_code", req.getSession().getAttribute("f_code"));
-            req.getRequestDispatcher("problem.jsp").forward(req, resp);
-
-            req.getSession().removeAttribute("f_code");
-        }
+        problemService.getProblem(req,resp);
     }
 
     @Override

@@ -14,10 +14,10 @@ import static uz.codingbat.codingbatclone.utils.Util.isSessionValid;
 
 @WebServlet("/admin")
 public class AdminController extends HttpServlet {
-    private final AdminService adminService = new AdminService();
+    private final AdminService adminService = AdminService.getInstance();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (isSessionValid(req)) {
             if (req.getSession().getAttribute("role") == Role.ADMIN) {
                 adminService.admin(req, resp);
@@ -30,6 +30,6 @@ public class AdminController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     }
 }

@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public class CompileService {
+    private static CompileService instance;
     private final JpaConnection jpaConnection = JpaConnection.getInstance();
 
     public String formatCode(String code) {
@@ -90,6 +91,7 @@ public class CompileService {
             JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
             List<String> filesToCompile = new ArrayList<>();
             filesToCompile.add(solutionFile.toString());
+
             for (String name : runnerClassNames) {
                 filesToCompile.add(userDir.resolve(name + ".java").toString());
             }
@@ -178,7 +180,7 @@ public class CompileService {
             TestCase test = entry.getKey();
             String output = entry.getValue();
 
-            String yourOutput = output;
+            String yourOutput;
             if (output.startsWith("PASS")) {
                 passed++;
                 yourOutput = test.getOutput();
@@ -204,5 +206,13 @@ public class CompileService {
                 .code(code)
                 .details(details)
                 .build();
+    }
+
+    public static CompileService getInstance() {
+        if (instance == null) {
+            instance = new CompileService();
+        }
+
+        return instance;
     }
 }

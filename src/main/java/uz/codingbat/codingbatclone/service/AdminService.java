@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AdminService {
+    private static AdminService instance;
     private final JpaConnection jdbc = JpaConnection.getInstance();
 
     @SneakyThrows
@@ -69,7 +70,7 @@ public class AdminService {
                             WHERE t.problem.id IN :ids
                             """, TestCase.class)
                     .setParameter("ids", problemIds)
-                    .getResultList() ;
+                    .getResultList();
 
             Map<UUID, List<TestCase>> testCaseMap = testCases.stream()
                     .collect(Collectors.groupingBy(tc -> tc.getProblem().getId()));
@@ -95,7 +96,6 @@ public class AdminService {
                                 .build();
                     })
                     .toList();
-
 
 
             int totalPages = (int) Math.ceil((double) totalProblems / size);
@@ -128,6 +128,14 @@ public class AdminService {
         } catch (NumberFormatException e) {
             return defaultVal;
         }
+    }
+
+    public static AdminService getInstance() {
+        if (instance == null) {
+            instance = new AdminService();
+        }
+
+        return instance;
     }
 
 }
