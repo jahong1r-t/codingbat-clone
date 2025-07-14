@@ -1,4 +1,3 @@
-<%--@elvariable id="filter" type="uz.codingbat.codingbatclone"--%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
@@ -71,6 +70,18 @@
             </div>
         </header>
 
+        <c:choose>
+            <c:when test="${sessionScope.is_authenticated == true}">
+                true
+            </c:when>
+            <c:when test="${sessionScope.is_authenticated == false}">
+                false
+            </c:when>
+            <c:otherwise>
+                null
+            </c:otherwise>
+        </c:choose>
+
         <!-- Filters -->
         <div class="filters">
             <a href="${pageContext.request.contextPath}/">
@@ -93,7 +104,6 @@
                 <c:when test="${sessionScope.is_authenticated == true}">
                     <c:forEach items="${page.content}" var="p">
                         <c:set var="cache" value="${sessionScope.cache[p.id.toString()]}"/>
-
                         <div class="problem-card">
                             <div class="problem-status">
                                 <c:choose>

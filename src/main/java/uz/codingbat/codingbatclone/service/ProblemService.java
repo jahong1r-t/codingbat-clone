@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.Problem;
 import uz.codingbat.codingbatclone.entity.TestCase;
+import uz.codingbat.codingbatclone.entity.UserActivity;
 import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
 import uz.codingbat.codingbatclone.payload.CacheDTO;
 import uz.codingbat.codingbatclone.payload.resp.ProblemRespDTO;
@@ -31,7 +32,11 @@ public class ProblemService {
 
         if (isSessionValid(req)) {
             try (EntityManager entityManager = jpaConnection.entityManager()) {
-                
+                entityManager.getTransaction().begin();
+                entityManager.find(UserActivity.class, req.getSession().getAttribute("user_id"));
+
+
+                entityManager.getTransaction().commit();
             }
             resp.sendRedirect("/problem?id=" + id + "&run=" + true);
             return;
