@@ -33,7 +33,13 @@ public class ProblemService {
         if (isSessionValid(req)) {
             try (EntityManager entityManager = jpaConnection.entityManager()) {
                 entityManager.getTransaction().begin();
-                entityManager.find(UserActivity.class, req.getSession().getAttribute("user_id"));
+
+
+                if (results.getError() == 0 && results.getFailed() == 0){
+                    UserActivity.builder()
+                            .build();
+                }
+
 
 
                 entityManager.getTransaction().commit();
