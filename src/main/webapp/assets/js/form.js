@@ -152,20 +152,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Submission error:', error);
 
-            // Show user-friendly error message
             const errorMessage = error.message.includes('JSON')
                 ? 'Invalid data format. Please check your inputs.'
                 : error.message;
 
             alert(`Error: ${errorMessage}`);
         } finally {
-            // Reset button state
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalBtnText;
         }
     });
 
-    // Add input validation for test cases
     testCasesContainer.addEventListener('input', (e) => {
         if (e.target.classList.contains('test-input') ||
             e.target.classList.contains('test-output')) {

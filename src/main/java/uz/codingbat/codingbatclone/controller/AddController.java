@@ -7,20 +7,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import uz.codingbat.codingbatclone.entity.Problem;
-import uz.codingbat.codingbatclone.entity.TestCase;
 import uz.codingbat.codingbatclone.entity.enums.Role;
-import uz.codingbat.codingbatclone.payload.ProblemDTO;
+import uz.codingbat.codingbatclone.payload.resp.ProblemRespDTO;
 import uz.codingbat.codingbatclone.payload.TestCaseDTO;
 import uz.codingbat.codingbatclone.service.ProblemService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static uz.codingbat.codingbatclone.utils.Util.isSessionValid;
 
@@ -59,26 +53,26 @@ public class AddController extends HttpServlet {
 
             // 2. Parse JSON
             ObjectMapper objectMapper = new ObjectMapper();
-            ProblemDTO problemDTO = objectMapper.readValue(jsonBuilder.toString(), ProblemDTO.class);
+            ProblemRespDTO problemRespDTO = objectMapper.readValue(jsonBuilder.toString(), ProblemRespDTO.class);
 
             // 3. Validate main problem fields
-            if (problemDTO.getTitle() == null || problemDTO.getTitle().trim().isEmpty()) {
+            if (problemRespDTO.getTitle() == null || problemRespDTO.getTitle().trim().isEmpty()) {
                 throw new IllegalArgumentException("Problem title is required");
             }
 
-            if (problemDTO.getDescription() == null || problemDTO.getDescription().trim().isEmpty()) {
+            if (problemRespDTO.getDescription() == null || problemRespDTO.getDescription().trim().isEmpty()) {
                 throw new IllegalArgumentException("Description is required");
             }
-            if (problemDTO.getCodeTemplate() == null || problemDTO.getCodeTemplate().trim().isEmpty()) {
+            if (problemRespDTO.getCodeTemplate() == null || problemRespDTO.getCodeTemplate().trim().isEmpty()) {
                 throw new IllegalArgumentException("Code template is required");
             }
-            if (problemDTO.getTestCases() == null || problemDTO.getTestCases().isEmpty()) {
+            if (problemRespDTO.getTestCases() == null || problemRespDTO.getTestCases().isEmpty()) {
                 throw new IllegalArgumentException("At least one test case is required");
             }
 
             // 4. Validate test cases
-            for (int i = 0; i < problemDTO.getTestCases().size(); i++) {
-                TestCaseDTO testCase = problemDTO.getTestCases().get(i);
+            for (int i = 0; i < problemRespDTO.getTestCases().size(); i++) {
+                TestCaseDTO testCase = problemRespDTO.getTestCases().get(i);
                 if (testCase.getInput() == null || testCase.getInput().trim().isEmpty()) {
                     throw new IllegalArgumentException("Input for test case #" + (i+1) + " cannot be empty");
                 }
@@ -89,14 +83,14 @@ public class AddController extends HttpServlet {
 
             // 5. Log received data
             System.out.println("\nParsed Problem Data:");
-            System.out.println("Title: " + problemDTO.getTitle());
-            System.out.println("Difficulty: " + problemDTO.getDifficulty());
-            System.out.println("Description: " + problemDTO.getDescription().substring(0, Math.min(50, problemDTO.getDescription().length())) + "...");
-            System.out.println("Code Template: " + problemDTO.getCodeTemplate().substring(0, Math.min(50, problemDTO.getCodeTemplate().length())) + "...");
+            System.out.println("Title: " + problemRespDTO.getTitle());
+            System.out.println("Difficulty: " + problemRespDTO.getDifficulty());
+            System.out.println("Description: " + problemRespDTO.getDescription().substring(0, Math.min(50, problemRespDTO.getDescription().length())) + "...");
+            System.out.println("Code Template: " + problemRespDTO.getCodeTemplate().substring(0, Math.min(50, problemRespDTO.getCodeTemplate().length())) + "...");
 
             System.out.println("\nTest Cases:");
-            for (int i = 0; i < problemDTO.getTestCases().size(); i++) {
-                TestCaseDTO testCase = problemDTO.getTestCases().get(i);
+            for (int i = 0; i < problemRespDTO.getTestCases().size(); i++) {
+                TestCaseDTO testCase = problemRespDTO.getTestCases().get(i);
                 System.out.println("  Test Case #" + (i+1));
                 System.out.println("    Input: " + testCase.getInput());
                 System.out.println("    Output: " + testCase.getOutput());

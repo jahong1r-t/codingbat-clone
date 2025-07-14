@@ -13,7 +13,6 @@
 <body>
 <div class="app-container">
     <nav class="navbar">
-        <!-- Navbar qismi o'zgarishsiz qoladi -->
         <div class="navbar-brand">
             <a href="${pageContext.request.contextPath}/">
                 <img id="logo-img" src="${pageContext.request.contextPath}/assets/img/logo-black.png" width="150px"
@@ -101,14 +100,8 @@
         </div>
 
         <div class="problem-list" id="problem-list">
-            <c:forEach items="${problems}" var="p">
-                <div class="problem-card"
-                     data-problem-id="${p.id}"
-                     data-title="${p.title}"
-                     data-difficulty="${p.difficulty}"
-                     data-description="${p.description}"
-                     data-template="${p.codeTemplate}"
-                     data-test-cases='${p.testCases}'>
+            <c:forEach items="${page.content}" var="p">
+                <div class="problem-card">
                     <div class="problem-info">
                         <h3 class="problem-title">${p.title}</h3>
                         <div class="problem-meta">
@@ -120,7 +113,7 @@
                                             p.difficulty == 'MEDIUM' ? 'Medium' :
                                                     'Hard'}
                             </span>
-                            <span class="problem-completion">${p.testCases.size()} test cases</span>
+                            <span class="problem-completion">${p.testCaseCount} test cases</span>
                         </div>
                     </div>
                     <div class="problem-actions">
@@ -138,43 +131,40 @@
                         </a>
                     </div>
                 </div>
-
             </c:forEach>
         </div>
 
     </main>
 
     <div class="pagination">
-        <!-- Pagination o'zgarishsiz qoladi -->
         <c:choose>
-            <c:when test="${previous > 0}">
-                <a href="?filter=${filter}&page=${previous}" class="pagination-btn">
+            <c:when test="${page.previousPage > 0}">
+                <a href="?filter=${page.filter}&page=${page.previousPage}" class="pagination-btn">
                     <i class="fas fa-chevron-left"></i> Prev
                 </a>
             </c:when>
             <c:otherwise>
-                    <span class="pagination-btn disabled">
-                        <i class="fas fa-chevron-left"></i> Prev
-                    </span>
+            <span class="pagination-btn disabled">
+                <i class="fas fa-chevron-left"></i> Prev
+            </span>
             </c:otherwise>
         </c:choose>
-        <c:set var="totalPages" value="${totalPages}"/>
-        <c:set var="currentPage" value="${currentPage}"/>
-        <c:forEach begin="1" end="${totalPages}" var="i">
-            <a href="?filter=${filter}&page=${i}" class="pagination-btn ${i == currentPage ? 'active' : ''}">
-                    ${i}
-            </a>
+
+        <c:forEach begin="1" end="${page.totalPages}" var="i">
+            <a href="?filter=${page.filter}&page=${i}"
+               class="pagination-btn ${i == page.currentPage ? 'active' : ''}">${i}</a>
         </c:forEach>
+
         <c:choose>
-            <c:when test="${next <= totalPages}">
-                <a href="?filter=${filter}&page=${next}" class="pagination-btn">
+            <c:when test="${page.nextPage <= page.totalPages}">
+                <a href="?filter=${page.filter}&page=${page.nextPage}" class="pagination-btn">
                     Next <i class="fas fa-chevron-right"></i>
                 </a>
             </c:when>
             <c:otherwise>
-                    <span class="pagination-btn disabled">
-                        Next <i class="fas fa-chevron-right"></i>
-                    </span>
+            <span class="pagination-btn disabled">
+                Next <i class="fas fa-chevron-right"></i>
+            </span>
             </c:otherwise>
         </c:choose>
     </div>

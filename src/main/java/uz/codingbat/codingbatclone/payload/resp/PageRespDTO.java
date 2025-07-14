@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageRespDTO<T> {
-    private List<T> content;
+    private List<?> content;
     private int size;
     private int currentPage;
     private int totalPages;

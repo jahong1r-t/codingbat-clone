@@ -9,7 +9,7 @@ import uz.codingbat.codingbatclone.entity.Problem;
 import uz.codingbat.codingbatclone.entity.TestCase;
 import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
 import uz.codingbat.codingbatclone.payload.CacheDTO;
-import uz.codingbat.codingbatclone.payload.ProblemDTO;
+import uz.codingbat.codingbatclone.payload.resp.ProblemRespDTO;
 import uz.codingbat.codingbatclone.payload.TestCaseDTO;
 import uz.codingbat.codingbatclone.payload.TestSummaryDTO;
 
@@ -74,7 +74,7 @@ public class ProblemService {
                     .build()).toList();
 
 
-            ProblemDTO build = ProblemDTO.builder()
+            ProblemRespDTO build = ProblemRespDTO.builder()
                     .id(problem.getId())
                     .title(problem.getTitle())
                     .description(problem.getDescription())

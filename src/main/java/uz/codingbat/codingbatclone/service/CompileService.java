@@ -3,7 +3,6 @@ package uz.codingbat.codingbatclone.service;
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.TestCase;
@@ -24,7 +23,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@RequiredArgsConstructor
 public class CompileService {
     private static CompileService instance;
     private final JpaConnection jpaConnection = JpaConnection.getInstance();
@@ -42,7 +40,7 @@ public class CompileService {
     @SneakyThrows
     public Map<TestCase, String> compile(String code, String id) {
         Map<TestCase, String> results = new LinkedHashMap<>();
-        Path baseDir = Paths.get("D:/Git Hub/codingbat-clone/src/temp");
+        Path baseDir = Paths.get("/src/temp");
         Path userDir = Files.createDirectories(baseDir.resolve(UUID.randomUUID().toString()));
 
         try (EntityManager entityManager = jpaConnection.entityManager()) {
@@ -208,7 +206,7 @@ public class CompileService {
                 .build();
     }
 
-    public static CompileService getInstance() {
+    public synchronized static CompileService getInstance() {
         if (instance == null) {
             instance = new CompileService();
         }

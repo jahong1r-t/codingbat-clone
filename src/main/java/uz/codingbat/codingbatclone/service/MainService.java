@@ -72,7 +72,7 @@ public class MainService {
         req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 
-    private PageRespDTO<?> setPagination(Long totalProblems, int size, int page, List<Problem> problems, String filter) {
+    protected PageRespDTO<?> setPagination(Long totalProblems, int size, int page, List<?> problems, String filter) {
         int totalPages = (int) Math.ceil((double) totalProblems / size);
 
         int currentPage = page + 1;

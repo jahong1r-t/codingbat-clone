@@ -170,22 +170,6 @@
     z-index: 2;
 }
 
-/*.activity-square:hover::after {*/
-/*    content: attr(data-count) " problems on " attr(data-date);*/
-/*    position: absolute;*/
-/*    top: -40px;*/
-/*    left: 50%;*/
-/*    transform: translateX(-50%);*/
-/*    background: var(--tooltip-bg);*/
-/*    color: white;*/
-/*    padding: 4px 8px;*/
-/*    border-radius: 4px;*/
-/*    font-size: 12px;*/
-/*    white-space: nowrap;*/
-/*    z-index: 10;*/
-/*    pointer-events: none;*/
-/*}*/
-
 /* Activity Levels */
 .activity-square.level-0 { background-color: var(--activity-level-0); }
 .activity-square.level-1 { background-color: var(--activity-level-1); }
