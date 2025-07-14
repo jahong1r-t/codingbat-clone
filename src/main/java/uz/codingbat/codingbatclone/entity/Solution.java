@@ -3,7 +3,7 @@ package uz.codingbat.codingbatclone.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -27,7 +27,7 @@ public class Solution {
     @Column(columnDefinition = "TEXT")
     private String code;
 
-    private boolean passed;
+    private SolveStatus solveStatus;
 
     private LocalDateTime submittedAt;
 }
