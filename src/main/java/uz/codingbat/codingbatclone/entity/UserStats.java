@@ -3,6 +3,8 @@ package uz.codingbat.codingbatclone.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
@@ -19,6 +21,8 @@ public class UserStats extends Auditable {
     private Integer currentStreak;
 
     private Integer bestStreak;
+
+    private LocalDate lastSolvedDate;
 
     @OneToOne
     private User user;

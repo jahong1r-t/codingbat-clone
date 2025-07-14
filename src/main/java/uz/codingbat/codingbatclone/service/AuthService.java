@@ -41,6 +41,7 @@ public class AuthService {
                 return;
             }
 
+            req.getSession().removeAttribute("cache");
             req.getSession().setAttribute("user_id", user.getId());
             req.getSession().setAttribute("role", user.getRole());
             req.getSession().setAttribute("is_authenticated", true);

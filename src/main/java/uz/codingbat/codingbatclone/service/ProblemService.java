@@ -5,9 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import uz.codingbat.codingbatclone.db.JpaConnection;
-import uz.codingbat.codingbatclone.entity.Problem;
-import uz.codingbat.codingbatclone.entity.TestCase;
-import uz.codingbat.codingbatclone.entity.UserActivity;
+import uz.codingbat.codingbatclone.entity.*;
 import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
 import uz.codingbat.codingbatclone.payload.CacheDTO;
 import uz.codingbat.codingbatclone.payload.resp.ProblemRespDTO;
@@ -15,6 +13,7 @@ import uz.codingbat.codingbatclone.payload.TestCaseDTO;
 import uz.codingbat.codingbatclone.payload.TestSummaryDTO;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 import static uz.codingbat.codingbatclone.utils.Util.isSessionValid;
@@ -33,14 +32,47 @@ public class ProblemService {
         if (isSessionValid(req)) {
             try (EntityManager entityManager = jpaConnection.entityManager()) {
                 entityManager.getTransaction().begin();
+                User user = entityManager.find(User.class, req.getSession().getAttribute("user_id"));
+                if (results.getError() == 0 && results.getFailed() == 0) {
+                    UserActivity date = entityManager.createQuery("select a from UserActivity a where a.date = :date", UserActivity.class)
+                            .setParameter("date", LocalDate.now())
+                            .getSingleResultOrNull();
 
+                    UserStats stats = entityManager.createQuery("SELECT s from UserStats s where s.user.id = :user_id", UserStats.class)
+                            .setParameter("user_id", user.getId())
+                            .getSingleResultOrNull();
 
-                if (results.getError() == 0 && results.getFailed() == 0){
-                    UserActivity.builder()
-                            .build();
+                    LocalDate today = LocalDate.now();
+                    LocalDate yesterday = today.minusDays(1);
+
+                    if (date == null) {
+                        UserActivity build = UserActivity.builder()
+                                .date(today)
+                                .problemsSolved(1)
+                                .user(user)
+                                .build();
+
+                        entityManager.persist(build);
+                    } else {
+                        date.setProblemsSolved(date.getProblemsSolved() + 1);
+                        entityManager.merge(date);
+                    }
+
+                    if (stats.getLastSolvedDate() == null || stats.getLastSolvedDate().isBefore(yesterday)) {
+                        stats.setCurrentStreak(1);
+                    } else if (stats.getLastSolvedDate().isEqual(yesterday)) {
+                        stats.setCurrentStreak(stats.getCurrentStreak() + 1);
+                    }
+
+                    if (stats.getCurrentStreak() > stats.getBestStreak()) {
+                        stats.setBestStreak(stats.getCurrentStreak());
+                    }
+
+                    stats.setSolvedProblemsCount(stats.getSolvedProblemsCount() + 1);
+                    stats.setLastSolvedDate(today);
+
+                    entityManager.merge(stats);
                 }
-
-
 
                 entityManager.getTransaction().commit();
             }
