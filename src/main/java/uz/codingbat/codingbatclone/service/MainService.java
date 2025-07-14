@@ -90,6 +90,8 @@ public class MainService {
                 .build();
     }
 
+    private
+
     private Difficulty parseDifficulty(String filter) {
         try {
             return Difficulty.valueOf(filter.toUpperCase());

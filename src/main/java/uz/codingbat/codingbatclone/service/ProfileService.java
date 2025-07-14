@@ -66,6 +66,5 @@ public class ProfileService {
     }
 
     public void updateProfile(HttpServletRequest req, HttpServletResponse resp) {
-
     }
 }

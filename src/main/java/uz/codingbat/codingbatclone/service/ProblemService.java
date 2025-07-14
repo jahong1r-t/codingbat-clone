@@ -31,7 +31,7 @@ public class ProblemService {
 
         if (isSessionValid(req)) {
             try (EntityManager entityManager = jpaConnection.entityManager()) {
-
+                
             }
             resp.sendRedirect("/problem?id=" + id + "&run=" + true);
             return;
