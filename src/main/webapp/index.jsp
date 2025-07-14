@@ -86,6 +86,11 @@
             </a>
         </div>
 
+
+        <div>
+            <c:out value="${sessionScope.cache}"/>
+        </div>
+
         <!-- Problems List -->
         <div class="problem-list" id="problem-list">
             <c:forEach items="${page.content}" var="p">
