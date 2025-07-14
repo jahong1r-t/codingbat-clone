@@ -5,14 +5,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.service.ProblemService;
 
 import java.io.IOException;
 
 @WebServlet("/problem/*")
 public class ProblemController extends HttpServlet {
-    private final JpaConnection jpaConnection = JpaConnection.getInstance();
     private final ProblemService problemService = new ProblemService();
 
     @Override

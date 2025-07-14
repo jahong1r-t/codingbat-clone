@@ -31,29 +31,6 @@ public class AdminService {
             Long totalProblems = entityManager
                     .createQuery("SELECT COUNT(p) FROM Problem p", Long.class)
                     .getSingleResult();
-//
-//            Long totalUsers = entityManager
-//                    .createQuery("SELECT COUNT(u) FROM User u WHERE u.role = 'USER'", Long.class)
-//                    .getSingleResult();
-//
-//            Problem lastProblem = entityManager.createQuery(
-//                            "SELECT p FROM Problem p ORDER BY p.createdAt DESC", Problem.class)
-//                    .setMaxResults(1)
-//                    .getSingleResult();
-//
-//            List<Problem> mostSolvedList = entityManager.createQuery("""
-//                            SELECT s.problem
-//                            FROM Solution s
-//                            WHERE s.passed = true
-//                            GROUP BY s.problem
-//                            ORDER BY COUNT(s.id) DESC
-//                            """, Problem.class)
-//                    .setMaxResults(1)
-//                    .getResultList();
-
-
-//            Problem mostSolvedProblem = mostSolvedList.isEmpty() ? null : mostSolvedList.get(0);
-
 
             List<Problem> problems = entityManager.createQuery(
                             "SELECT p FROM Problem p", Problem.class)
@@ -82,70 +59,20 @@ public class AdminService {
                     ));
 
             List<ProblemRespDTO> problemRespDTO = problems.stream()
-                    .map(p -> {
-                        return ProblemRespDTO.builder()
-                                .id(p.getId())
-                                .title(p.getTitle())
-                                .difficulty(p.getDifficulty())
-                                .description(p.getDescription())
-                                .codeTemplate(p.getCodeTemplate())
-                                .testCaseCount(testCaseCountMap.getOrDefault(p.getId(), 0L))
-                                .build();
-                    })
+                    .map(p -> ProblemRespDTO.builder()
+                            .id(p.getId())
+                            .title(p.getTitle())
+                            .difficulty(p.getDifficulty())
+                            .description(p.getDescription())
+                            .codeTemplate(p.getCodeTemplate())
+                            .testCaseCount(testCaseCountMap.getOrDefault(p.getId(), 0L))
+                            .build())
                     .toList();
-
-
-//            List<TestCase> testCases = entityManager.createQuery("""
-//                            SELECT t FROM TestCase t
-//                            WHERE t.problem.id IN :ids
-//                            """, TestCase.class)
-//                    .setParameter("ids", problemIds)
-//                    .getResultList();
-//
-//            Map<UUID, List<Integer>> testCaseMap = ids.stream()
-//                    .collect(Collectors.groupingBy(tc -> tc.getId()));
-//
-//
-//            List<ProblemRespDTO> problemDTOs = problems.stream()
-//                    .map(p -> {
-//                        List<TestCaseDTO> tcList = testCaseMap.getOrDefault(p.getId(), List.of()).stream()
-//                                .map(tc -> TestCaseDTO.builder()
-//                                        .input(tc.getInput())
-//                                        .output(tc.getOutput())
-//                                        .hidden(false)
-//                                        .build())
-//                                .toList();
-//
-//                        return ProblemRespDTO.builder()
-//                                .id(p.getId())
-//                                .title(p.getTitle())
-//                                .difficulty(p.getDifficulty())
-//                                .description(p.getDescription())
-//                                .codeTemplate(p.getCodeTemplate())
-//                                .testCases(tcList)
-//                                .build();
-//                    })
-//                    .toList();
-
-
-//            int totalPages = (int) Math.ceil((double) totalProblems / size);
-//            int currentPage = page + 1;
-
-
-//            int next = Math.min(currentPage + 1, totalPages);
-//            int previous = Math.max(currentPage - 1, 1);
 
             PageRespDTO<?> pageRespDTO = mainService.setPagination(totalProblems, size, page, problemRespDTO, null);
 
             req.setAttribute("stats", getStats(entityManager, totalProblems));
             req.setAttribute("page", pageRespDTO);
-
-//            req.setAttribute("problems", problemDTOs);
-//            req.setAttribute("totalPages", totalPages);
-//            req.setAttribute("currentPage", currentPage);
-//            req.setAttribute("next", next);
-//            req.setAttribute("previous", previous);
-//            req.setAttribute("size", size);
         }
 
         req.getRequestDispatcher("admin.jsp").forward(req, resp);
@@ -176,7 +103,6 @@ public class AdminService {
                 .build();
     }
 
-
     private int parseIntOrDefault(String val, int defaultVal) {
         try {
             return Integer.parseInt(val);
@@ -192,5 +118,4 @@ public class AdminService {
 
         return instance;
     }
-
 }
