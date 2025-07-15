@@ -7,9 +7,10 @@ import lombok.SneakyThrows;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.Problem;
 import uz.codingbat.codingbatclone.entity.enums.Role;
+import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
 import uz.codingbat.codingbatclone.payload.StatsDTO;
-import uz.codingbat.codingbatclone.payload.resp.PageRespDTO;
-import uz.codingbat.codingbatclone.payload.resp.ProblemRespDTO;
+import uz.codingbat.codingbatclone.payload.PageRespDTO;
+import uz.codingbat.codingbatclone.payload.ProblemRespDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -89,9 +90,10 @@ public class AdminService {
                 .getResultStream().findFirst().orElse(null);
 
         Problem mostSolved = em.createQuery("""
-                        SELECT s.problem FROM Solution s WHERE s.passed = true
+                        SELECT s.problem FROM Solution s WHERE s.solveStatus= :status
                         GROUP BY s.problem ORDER BY COUNT(s.id) DESC
                         """, Problem.class)
+                .setParameter("status", SolveStatus.SOLVED)
                 .setMaxResults(1)
                 .getResultStream().findFirst().orElse(null);
 

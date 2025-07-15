@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.Problem;
 import uz.codingbat.codingbatclone.entity.enums.Difficulty;
-import uz.codingbat.codingbatclone.payload.resp.PageRespDTO;
+import uz.codingbat.codingbatclone.payload.PageRespDTO;
 
 import java.io.IOException;
 import java.util.List;

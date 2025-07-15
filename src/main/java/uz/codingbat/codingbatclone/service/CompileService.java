@@ -36,7 +36,6 @@ public class CompileService {
         }
     }
 
-
     @SneakyThrows
     public Map<TestCase, String> compile(String code, String id) {
         Map<TestCase, String> results = new LinkedHashMap<>();

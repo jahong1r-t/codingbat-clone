@@ -8,13 +8,12 @@ import uz.codingbat.codingbatclone.db.JpaConnection;
 import uz.codingbat.codingbatclone.entity.*;
 import uz.codingbat.codingbatclone.entity.enums.SolveStatus;
 import uz.codingbat.codingbatclone.payload.CacheDTO;
-import uz.codingbat.codingbatclone.payload.resp.ProblemRespDTO;
+import uz.codingbat.codingbatclone.payload.ProblemRespDTO;
 import uz.codingbat.codingbatclone.payload.TestCaseDTO;
 import uz.codingbat.codingbatclone.payload.TestSummaryDTO;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import static uz.codingbat.codingbatclone.utils.Util.isSessionValid;
@@ -73,7 +72,7 @@ public class ProblemService {
                     stats.setSolvedProblemsCount(stats.getSolvedProblemsCount() + 1);
                     stats.setLastSolvedDate(today);
 
-                    manageSolution(req, entityManager, entityManager.find(Problem.class, UUID.fromString(id)), true, code);
+                    manageSolution(req, entityManager, entityManager.find(Problem.class, UUID.fromString(id)), code);
 
                     entityManager.merge(stats);
                 }
@@ -85,7 +84,8 @@ public class ProblemService {
 
         CacheDTO build = CacheDTO.builder()
                 .code(code)
-                .status(results.getError() == 0 && results.getFailed() == 0 ? SolveStatus.SOLVED : SolveStatus.OPENED)
+                .status(results.getError() == 0 && results.getFailed() == 0 ?
+                        SolveStatus.SOLVED : SolveStatus.OPENED)
                 .build();
 
         Map<String, CacheDTO> cache = (Map<String, CacheDTO>)
@@ -137,8 +137,6 @@ public class ProblemService {
                         .getResultList();
 
 
-                System.err.println(existingSolutions.isEmpty());
-
                 if (existingSolutions.isEmpty()) {
 
                     Solution solution = Solution.builder()
@@ -159,16 +157,13 @@ public class ProblemService {
 
             if (cache == null) {
                 cache = new HashMap<>();
-                CacheDTO cacheDTO = CacheDTO.builder()
-                        .status(SolveStatus.OPENED)
-                        .build();
-                cache.putIfAbsent(problem.getId().toString(), cacheDTO);
-            } else {
-                CacheDTO cacheDTO = CacheDTO.builder()
-                        .status(SolveStatus.OPENED)
-                        .build();
-                cache.putIfAbsent(problem.getId().toString(), cacheDTO);
             }
+
+            CacheDTO cacheDTO = CacheDTO.builder()
+                    .status(SolveStatus.OPENED)
+                    .build();
+            cache.putIfAbsent(problem.getId().toString(), cacheDTO);
+
 
             req.getSession().setAttribute("cache", cache);
             req.getRequestDispatcher("problem.jsp").forward(req, resp);
@@ -176,7 +171,7 @@ public class ProblemService {
 
     }
 
-    private void manageSolution(HttpServletRequest req, EntityManager entityManager, Problem problem, Boolean isSolved, String code) throws IOException {
+    private void manageSolution(HttpServletRequest req, EntityManager entityManager, Problem problem, String code) {
         UUID userId = (UUID) req.getSession().getAttribute("user_id");
         User user = entityManager.find(User.class, userId);
 
@@ -190,7 +185,7 @@ public class ProblemService {
                     .user(user)
                     .problem(problem)
                     .code(problem.getCodeTemplate())
-                    .solveStatus(isSolved ? SolveStatus.SOLVED : SolveStatus.OPENED)
+                    .solveStatus(SolveStatus.SOLVED)
                     .build();
 
             entityManager.persist(solution);
@@ -198,7 +193,7 @@ public class ProblemService {
         }
 
         Solution solution = existingSolutions.get(0);
-        solution.setSolveStatus(isSolved ? SolveStatus.SOLVED : SolveStatus.OPENED);
+        solution.setSolveStatus(SolveStatus.SOLVED);
         solution.setCode(code);
 
         entityManager.merge(solution);

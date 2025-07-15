@@ -1,9 +1,8 @@
-package uz.codingbat.codingbatclone.payload.resp;
+package uz.codingbat.codingbatclone.payload;
 
 import lombok.Builder;
 import lombok.Data;
 import uz.codingbat.codingbatclone.entity.enums.Difficulty;
-import uz.codingbat.codingbatclone.payload.TestCaseDTO;
 
 import java.util.List;
 import java.util.UUID;

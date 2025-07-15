@@ -1,4 +1,4 @@
-package uz.codingbat.codingbatclone.payload.resp;
+package uz.codingbat.codingbatclone.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

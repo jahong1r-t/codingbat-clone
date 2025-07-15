@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import uz.codingbat.codingbatclone.entity.enums.Role;
-import uz.codingbat.codingbatclone.payload.resp.ProblemRespDTO;
+import uz.codingbat.codingbatclone.payload.ProblemRespDTO;
 import uz.codingbat.codingbatclone.payload.TestCaseDTO;
 import uz.codingbat.codingbatclone.service.ProblemService;
 
